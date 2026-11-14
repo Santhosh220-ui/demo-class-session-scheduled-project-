@@ -181,8 +181,8 @@
               <img src="https://pumotechnovation.com/assets/logo/pumo_cap_logo.png" alt="Pumo Cap" class="pumo-cap-img" width="34" height="34">
             </div>
             <div>
-              <h3 class="card-heading">Student Demo &amp; Conversion Registration</h3>
-              <p class="card-subheading">Enter student details, select IT course, timing, mode, and joining status.</p>
+              <h3 class="card-heading">Student Demo Registration</h3>
+              <p class="card-subheading">Enter student details, select IT course, timing slot, and training mode.</p>
             </div>
           </div>
           <div class="header-side-cta">
@@ -355,55 +355,6 @@
                 <span class="error-text" id="demoDateError"></span>
               </div>
 
-              <!-- 7. Joining or Not Convert Status -->
-              <div class="form-group grid-span-full">
-                <label class="form-label">
-                  Course Joining Status (Convert) <span class="required-star">*</span>
-                  <span class="label-helper-text">(Record candidate's decision: Joining, Not Converted, or Discussion)</span>
-                </label>
-                <div class="status-card-grid">
-                  <!-- Option 1: Joining / Converted -->
-                  <label class="status-card status-card-joining" for="statusJoining">
-                    <input type="radio" id="statusJoining" name="joiningStatus" value="Joining" checked>
-                    <div class="status-card-body">
-                      <div class="status-card-header">
-                        <span class="status-radio-circle"></span>
-                        <strong class="status-title">Joining</strong>
-                        <span class="status-pill-badge badge-green">Converted</span>
-                      </div>
-                      <p class="status-desc">Student confirmed or ready to enroll in the course.</p>
-                    </div>
-                  </label>
-
-                  <!-- Option 2: Not Converted -->
-                  <label class="status-card status-card-not-converted" for="statusNotConverted">
-                    <input type="radio" id="statusNotConverted" name="joiningStatus" value="Not Converted">
-                    <div class="status-card-body">
-                      <div class="status-card-header">
-                        <span class="status-radio-circle"></span>
-                        <strong class="status-title">Not Converted</strong>
-                        <span class="status-pill-badge badge-red">Not Joining</span>
-                      </div>
-                      <p class="status-desc">Student decided not to join or not interested.</p>
-                    </div>
-                  </label>
-
-                  <!-- Option 3: Deciding / Follow Up -->
-                  <label class="status-card status-card-deciding" for="statusDeciding">
-                    <input type="radio" id="statusDeciding" name="joiningStatus" value="Deciding / Follow Up">
-                    <div class="status-card-body">
-                      <div class="status-card-header">
-                        <span class="status-radio-circle"></span>
-                        <strong class="status-title">Deciding / Discussion</strong>
-                        <span class="status-pill-badge badge-amber">Follow Up</span>
-                      </div>
-                      <p class="status-desc">Decision pending after demo session or counseling call.</p>
-                    </div>
-                  </label>
-                </div>
-                <span class="error-text" id="joiningStatusError"></span>
-              </div>
-
             </div>
           </div>
 
@@ -489,10 +440,6 @@
               <span class="item-label">Date of Demo</span>
               <strong class="item-val" id="receiptDemoDate">-</strong>
             </div>
-            <div class="receipt-item">
-              <span class="item-label">Joining / Convert Status</span>
-              <strong class="item-val" id="receiptJoiningStatus">-</strong>
-            </div>
           </div>
         </div>
 
@@ -537,10 +484,22 @@
                 Registered Student Demos 
                 <span class="records-pill-badge" id="inlineRecordsBadge">0</span>
               </h3>
-              <p class="card-subheading">Live candidate records with timing, mode &amp; conversion status</p>
+              <p class="card-subheading">Live candidate demo records with course, timing &amp; training mode</p>
+              <div class="sync-status-indicator status-success" id="inlineSyncIndicator">
+                <span class="pulse-dot-green"></span>
+                <span id="inlineSyncStatusText">Live Sheet Synced</span>
+              </div>
             </div>
           </div>
           <div class="records-quick-actions">
+            <button type="button" class="btn btn-sm btn-sync-live" id="inlineSyncBtn" title="Sync live data with Google Sheet (automatically removes rows deleted in Sheet)">
+              <svg class="sync-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              <span id="inlineSyncBtnText">Sync Sheet</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-danger" id="inlineClearLocalBtn" title="Clear cached records and refresh">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              <span>Clear</span>
+            </button>
             <button type="button" class="btn btn-sm btn-outline" id="inlineExportCsvBtn" title="Export records to CSV">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               <span>Export CSV</span>
@@ -562,25 +521,18 @@
                 <strong class="kpi-value" id="inlineKpiTotal">0</strong>
               </div>
             </div>
-            <div class="record-kpi-card kpi-converted">
-              <div class="kpi-icon">✅</div>
+            <div class="record-kpi-card kpi-offline">
+              <div class="kpi-icon">🏢</div>
               <div class="kpi-info">
-                <span class="kpi-label">Joining</span>
-                <strong class="kpi-value" id="inlineKpiConverted">0</strong>
+                <span class="kpi-label">Offline Classroom</span>
+                <strong class="kpi-value" id="inlineKpiOffline">0</strong>
               </div>
             </div>
-            <div class="record-kpi-card kpi-not-converted">
-              <div class="kpi-icon">❌</div>
+            <div class="record-kpi-card kpi-online">
+              <div class="kpi-icon">💻</div>
               <div class="kpi-info">
-                <span class="kpi-label">Not Converted</span>
-                <strong class="kpi-value" id="inlineKpiNotConverted">0</strong>
-              </div>
-            </div>
-            <div class="record-kpi-card kpi-deciding">
-              <div class="kpi-icon">⏳</div>
-              <div class="kpi-info">
-                <span class="kpi-label">Deciding</span>
-                <strong class="kpi-value" id="inlineKpiDeciding">0</strong>
+                <span class="kpi-label">Online Interactive</span>
+                <strong class="kpi-value" id="inlineKpiOnline">0</strong>
               </div>
             </div>
           </div>
@@ -593,9 +545,8 @@
             </div>
             <div class="records-filter-group" id="inlineFilterPills">
               <button type="button" class="filter-chip active" data-filter="all">All</button>
-              <button type="button" class="filter-chip filter-chip-joining" data-filter="Joining">Joining</button>
-              <button type="button" class="filter-chip filter-chip-not-conv" data-filter="Not Converted">Not Converted</button>
-              <button type="button" class="filter-chip filter-chip-deciding" data-filter="Deciding">Deciding</button>
+              <button type="button" class="filter-chip" data-filter="Offline">🏢 Offline</button>
+              <button type="button" class="filter-chip" data-filter="Online">💻 Online</button>
             </div>
           </div>
 
@@ -841,6 +792,7 @@
           <pre class="code-pre"><code id="appsScriptCodeBlock">/**
  * Pumo Technovation - Student Demo Registration Web App Backend
  * Google Spreadsheet ID: 1jBZ1tbLNVroOzcTTXbcRRBVk1G1hrQXJklHlig3nmbk
+ * Version: 2.0 (Full Live Two-Way Sync: Read, Write &amp; Auto-Delete)
  */
 
 var SPREADSHEET_ID = "1jBZ1tbLNVroOzcTTXbcRRBVk1G1hrQXJklHlig3nmbk";
@@ -853,17 +805,170 @@ function getTargetSheet() {
   }
 }
 
+/**
+ * Handles GET requests:
+ * 1. Default: Reads all live student demo rows directly from Google Sheet.
+ * 2. action=delete: Deletes row matching referenceId or phone.
+ * 3. action=clear: Clears all student rows (preserves Row 1 headers).
+ */
 function doGet(e) {
-  var responseData = {
-    status: "online",
-    message: "Pumo Technovation Google Sheets Registration API is active.",
-    spreadsheetId: SPREADSHEET_ID,
-    timestamp: new Date().toISOString()
-  };
-  return ContentService.createTextOutput(JSON.stringify(responseData))
-    .setMimeType(ContentService.MimeType.JSON);
+  var lock = LockService.getScriptLock();
+  lock.tryLock(10000);
+
+  try {
+    var p = e ? (e.parameter || {}) : {};
+    var action = p.action || "get";
+    var sheet = getTargetSheet();
+    var lastRow = sheet.getLastRow();
+
+    // Action 1: Delete a specific record by Reference ID
+    if (action === "delete") {
+      var targetRefId = p.referenceId || p.refId || p.id || "";
+      var deletedCount = 0;
+      if (targetRefId && lastRow >= 2) {
+        var colCount = Math.max(sheet.getLastColumn(), 7);
+        var dataValues = sheet.getRange(2, 1, lastRow - 1, colCount).getValues();
+        for (var r = dataValues.length - 1; r >= 0; r--) {
+          var rowRef = String(dataValues[r][1] || "").trim();
+          var rowPhone = String(dataValues[r][3] || "").replace(/\D/g, "");
+          if (rowRef === targetRefId || (targetRefId.length === 10 && rowPhone === targetRefId)) {
+            sheet.deleteRow(r + 2);
+            deletedCount++;
+          }
+        }
+      }
+      return ContentService.createTextOutput(JSON.stringify({
+        result: "success",
+        action: "delete",
+        deletedCount: deletedCount,
+        message: deletedCount > 0 ? ("Deleted " + deletedCount + " row(s) for " + targetRefId) : "No matching row found"
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // Action 2: Clear all data rows (preserves headers)
+    if (action === "clear" || action === "reset") {
+      if (lastRow >= 2) {
+        sheet.deleteRows(2, lastRow - 1);
+      }
+      return ContentService.createTextOutput(JSON.stringify({
+        result: "success",
+        action: "clear",
+        message: "All student demo rows cleared from Google Sheet."
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // Action 3: GET All Current Records (Default)
+    // If the sheet is empty or user manually deleted all rows in Google Sheets
+    if (lastRow <= 1) {
+      return ContentService.createTextOutput(JSON.stringify({
+        result: "success",
+        total: 0,
+        records: [],
+        message: "Sheet contains no data rows."
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    var lastCol = Math.max(sheet.getLastColumn(), 7);
+    var rangeValues = sheet.getRange(1, 1, lastRow, lastCol).getValues();
+    var headers = rangeValues[0] || [];
+    var records = [];
+
+    // Identify column indices dynamically by header text
+    var idxRef = 1;
+    var idxName = 2;
+    var idxContact = 3;
+    var idxCourse = 4;
+    var idxDate = 5;
+    var idxStatus = 6;
+    var idxTime = -1;
+    var idxMode = -1;
+    var idxTimestamp = 0;
+
+    for (var h = 0; h < headers.length; h++) {
+      var headerText = String(headers[h] || "").toLowerCase().trim();
+      if (headerText.indexOf("ref") !== -1 || headerText.indexOf("id") !== -1) idxRef = h;
+      else if (headerText.indexOf("name") !== -1 || headerText.indexOf("student") !== -1) idxName = h;
+      else if (headerText.indexOf("contact") !== -1 || headerText.indexOf("mobile") !== -1 || headerText.indexOf("phone") !== -1) idxContact = h;
+      else if (headerText.indexOf("course") !== -1 || headerText.indexOf("program") !== -1) idxCourse = h;
+      else if (headerText.indexOf("date") !== -1) idxDate = h;
+      else if (headerText.indexOf("time") !== -1 || headerText.indexOf("slot") !== -1) idxTime = h;
+      else if (headerText.indexOf("mode") !== -1) idxMode = h;
+      else if (headerText.indexOf("status") !== -1 || headerText.indexOf("convert") !== -1 || headerText.indexOf("remark") !== -1) idxStatus = h;
+      else if (headerText.indexOf("timestamp") !== -1) idxTimestamp = h;
+    }
+
+    for (var i = 1; i < rangeValues.length; i++) {
+      var row = rangeValues[i];
+      var hasData = false;
+      for (var c = 0; c < row.length; c++) {
+        if (row[c] !== "" && row[c] !== null && row[c] !== undefined) {
+          hasData = true;
+          break;
+        }
+      }
+      if (!hasData) continue;
+
+      var rawName = row[idxName] ? String(row[idxName]).trim() : "";
+      var rawContact = row[idxContact] ? String(row[idxContact]).replace(/^'/, "").trim() : "";
+      var rawRef = row[idxRef] ? String(row[idxRef]).trim() : ("PT-DEMO-" + (i + 1000));
+      var rawCourse = row[idxCourse] ? String(row[idxCourse]).trim() : "Python Full Stack";
+      var rawDate = row[idxDate] ? String(row[idxDate]).trim() : "";
+      var rawTime = (idxTime >= 0 && row[idxTime]) ? String(row[idxTime]).trim() : "Flexible Slot";
+      var rawMode = (idxMode >= 0 && row[idxMode]) ? String(row[idxMode]).trim() : "Offline";
+      var rawStatus = (idxStatus >= 0 && row[idxStatus]) ? String(row[idxStatus]).trim() : "Joining";
+      var rawTimestamp = row[idxTimestamp] ? String(row[idxTimestamp]).trim() : new Date().toISOString();
+
+      if (row[idxDate] instanceof Date) {
+        var dt = row[idxDate];
+        var yyyy = dt.getFullYear();
+        var mm = String(dt.getMonth() + 1).padStart(2, "0");
+        var dd = String(dt.getDate()).padStart(2, "0");
+        rawDate = yyyy + "-" + mm + "-" + dd;
+      }
+
+      var cleanStatus = "Joining";
+      if (rawStatus.indexOf("Not Converted") !== -1) {
+        cleanStatus = "Not Converted";
+      } else if (rawStatus.indexOf("Deciding") !== -1) {
+        cleanStatus = "Deciding / Follow Up";
+      }
+
+      records.push({
+        referenceId: rawRef,
+        fullName: rawName,
+        contactNumber: rawContact,
+        courseName: rawCourse,
+        courseTiming: rawTime,
+        trainingMode: rawMode,
+        demoDate: rawDate,
+        joiningStatus: cleanStatus,
+        readableTimestamp: rawTimestamp,
+        submissionTimestamp: rawTimestamp
+      });
+    }
+
+    return ContentService.createTextOutput(JSON.stringify({
+      result: "success",
+      total: records.length,
+      records: records,
+      spreadsheetId: SPREADSHEET_ID,
+      lastUpdated: new Date().toISOString()
+    })).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({
+      result: "error",
+      message: err.toString(),
+      records: []
+    })).setMimeType(ContentService.MimeType.JSON);
+  } finally {
+    lock.releaseLock();
+  }
 }
 
+/**
+ * Handles POST requests: Appends new student registration row
+ */
 function doPost(e) {
   var lock = LockService.getScriptLock();
   var acquired = lock.tryLock(15000);
@@ -879,10 +984,11 @@ function doPost(e) {
         "Student Name",
         "Contact Number",
         "Course Name",
-        "Date of Demo",
-        "Joining Status (Convert)"
+        "Course Timing",
+        "Training Mode",
+        "Date of Demo"
       ]);
-      sheet.getRange(1, 1, 1, 7).setFontWeight("bold").setBackground("#0d47a1").setFontColor("#ffffff");
+      sheet.getRange(1, 1, 1, 8).setFontWeight("bold").setBackground("#0d47a1").setFontColor("#ffffff");
       sheet.setFrozenRows(1);
     }
 
@@ -897,13 +1003,14 @@ function doPost(e) {
     var fullName = p.fullName || p.studentName || p.name || "N/A";
     var contact = p.contactNumber || p.contact || p.mobileNumber || p.phone || p.mobile || "N/A";
     var course = p.courseName || p.interestedCourse || p.course || "N/A";
+    var timing = p.courseTiming || p.demoTime || p.time || p.slot || "10:00 AM - 11:30 AM (Morning Slot)";
+    var mode = p.trainingMode || p.mode || "Offline";
     var demoDate = p.demoDate || p.date || "N/A";
-    var joiningStatus = p.joiningStatus || p.status || p.convert || p.conversion || p.remarks || "Joining";
     var refId = p.referenceId || ("PT-" + Math.floor(1000 + Math.random() * 9000));
     var timestamp = p.submissionDate || new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
 
     // If existing sheet has 16 columns from previous template, support both formats seamlessly
-    if (sheet.getLastColumn() > 7) {
+    if (sheet.getLastColumn() > 8) {
       sheet.appendRow([
         timestamp,
         refId,
@@ -917,10 +1024,10 @@ function doPost(e) {
         p.yearOfPassing || "N/A",
         course,
         demoDate,
-        p.demoTime || "N/A",
-        p.trainingMode || "N/A",
-        p.branchLocation || "N/A",
-        "Joining Status: " + joiningStatus
+        timing,
+        mode,
+        p.branchLocation || "Poonamallee",
+        "Demo Registered"
       ]);
     } else {
       sheet.appendRow([
@@ -929,8 +1036,9 @@ function doPost(e) {
         fullName,
         "'" + contact,
         course,
-        demoDate,
-        joiningStatus
+        timing,
+        mode,
+        demoDate
       ]);
     }
 
@@ -990,25 +1098,18 @@ function doPost(e) {
               <strong class="kpi-value" id="kpiTotalDemos">0</strong>
             </div>
           </div>
-          <div class="record-kpi-card kpi-converted">
-            <div class="kpi-icon">✅</div>
+          <div class="record-kpi-card kpi-offline">
+            <div class="kpi-icon">🏢</div>
             <div class="kpi-info">
-              <span class="kpi-label">Joining / Converted</span>
-              <strong class="kpi-value" id="kpiConverted">0</strong>
+              <span class="kpi-label">Offline Classroom</span>
+              <strong class="kpi-value" id="kpiOffline">0</strong>
             </div>
           </div>
-          <div class="record-kpi-card kpi-not-converted">
-            <div class="kpi-icon">❌</div>
+          <div class="record-kpi-card kpi-online">
+            <div class="kpi-icon">💻</div>
             <div class="kpi-info">
-              <span class="kpi-label">Not Converted</span>
-              <strong class="kpi-value" id="kpiNotConverted">0</strong>
-            </div>
-          </div>
-          <div class="record-kpi-card kpi-deciding">
-            <div class="kpi-icon">⏳</div>
-            <div class="kpi-info">
-              <span class="kpi-label">Follow Up / Deciding</span>
-              <strong class="kpi-value" id="kpiDeciding">0</strong>
+              <span class="kpi-label">Online Interactive</span>
+              <strong class="kpi-value" id="kpiOnline">0</strong>
             </div>
           </div>
         </div>
@@ -1022,12 +1123,19 @@ function doPost(e) {
 
           <div class="records-filter-group" id="recordsFilterPills">
             <button type="button" class="filter-chip active" data-filter="all">All (<span id="chipAllCount">0</span>)</button>
-            <button type="button" class="filter-chip filter-chip-joining" data-filter="Joining">Joining (<span id="chipJoiningCount">0</span>)</button>
-            <button type="button" class="filter-chip filter-chip-not-conv" data-filter="Not Converted">Not Converted (<span id="chipNotConvCount">0</span>)</button>
-            <button type="button" class="filter-chip filter-chip-deciding" data-filter="Deciding">Deciding (<span id="chipDecidingCount">0</span>)</button>
+            <button type="button" class="filter-chip" data-filter="Offline">🏢 Offline (<span id="chipOfflineCount">0</span>)</button>
+            <button type="button" class="filter-chip" data-filter="Online">💻 Online (<span id="chipOnlineCount">0</span>)</button>
           </div>
 
           <div class="records-action-btns">
+            <button type="button" class="btn btn-sm btn-sync-live" id="modalSyncBtn" title="Sync live records with Google Sheet">
+              <svg class="sync-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              <span>Sync Sheet</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-danger" id="modalClearLocalBtn" title="Clear cached demo records">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              <span>Clear</span>
+            </button>
             <button type="button" class="btn btn-sm btn-outline" id="exportRecordsCsvBtn" title="Download all records as CSV file">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               <span>Export CSV</span>
@@ -1051,7 +1159,6 @@ function doPost(e) {
                 <th>Timing Slot</th>
                 <th>Mode</th>
                 <th>Demo Date</th>
-                <th>Joining Status</th>
                 <th>Action</th>
               </tr>
             </thead>

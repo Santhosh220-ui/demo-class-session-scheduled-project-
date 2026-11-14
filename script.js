@@ -86,7 +86,6 @@
     courseTiming: document.getElementById('courseTiming'),
     trainingModeRadios: document.querySelectorAll('input[name="trainingMode"]'),
     demoDate: document.getElementById('demoDate'),
-    joiningStatusRadios: document.querySelectorAll('input[name="joiningStatus"]'),
     honeypot: document.getElementById('pumo_hp_field'),
 
     // Success Receipt Elements
@@ -97,7 +96,6 @@
     receiptTiming: document.getElementById('receiptTiming'),
     receiptMode: document.getElementById('receiptMode'),
     receiptDemoDate: document.getElementById('receiptDemoDate'),
-    receiptJoiningStatus: document.getElementById('receiptJoiningStatus'),
     successHeading: document.getElementById('successHeading'),
     successDescription: document.getElementById('successDescription'),
     verificationDetailText: document.getElementById('verificationDetailText'),
@@ -121,24 +119,28 @@
     inlineRecordsCard: document.getElementById('inlineRecordsCard'),
     inlineRecordsBadge: document.getElementById('inlineRecordsBadge'),
     inlineExportCsvBtn: document.getElementById('inlineExportCsvBtn'),
+    inlineSyncBtn: document.getElementById('inlineSyncBtn'),
+    inlineSyncBtnText: document.getElementById('inlineSyncBtnText'),
+    inlineClearLocalBtn: document.getElementById('inlineClearLocalBtn'),
+    inlineSyncIndicator: document.getElementById('inlineSyncIndicator'),
+    inlineSyncStatusText: document.getElementById('inlineSyncStatusText'),
     inlineKpiTotal: document.getElementById('inlineKpiTotal'),
-    inlineKpiConverted: document.getElementById('inlineKpiConverted'),
-    inlineKpiNotConverted: document.getElementById('inlineKpiNotConverted'),
-    inlineKpiDeciding: document.getElementById('inlineKpiDeciding'),
+    inlineKpiOffline: document.getElementById('inlineKpiOffline'),
+    inlineKpiOnline: document.getElementById('inlineKpiOnline'),
     inlineSearchInput: document.getElementById('inlineSearchInput'),
     inlineFilterPills: document.getElementById('inlineFilterPills'),
     inlineRecordsList: document.getElementById('inlineRecordsList'),
     inlineRecordsEmpty: document.getElementById('inlineRecordsEmpty'),
+    modalSyncBtn: document.getElementById('modalSyncBtn'),
+    modalClearLocalBtn: document.getElementById('modalClearLocalBtn'),
 
     // KPI & Badge Indicators
     kpiTotalDemos: document.getElementById('kpiTotalDemos'),
-    kpiConverted: document.getElementById('kpiConverted'),
-    kpiNotConverted: document.getElementById('kpiNotConverted'),
-    kpiDeciding: document.getElementById('kpiDeciding'),
+    kpiOffline: document.getElementById('kpiOffline'),
+    kpiOnline: document.getElementById('kpiOnline'),
     chipAllCount: document.getElementById('chipAllCount'),
-    chipJoiningCount: document.getElementById('chipJoiningCount'),
-    chipNotConvCount: document.getElementById('chipNotConvCount'),
-    chipDecidingCount: document.getElementById('chipDecidingCount'),
+    chipOfflineCount: document.getElementById('chipOfflineCount'),
+    chipOnlineCount: document.getElementById('chipOnlineCount'),
     navRecordsBadge: document.getElementById('navRecordsBadge'),
     cardRecordsBadge: document.getElementById('cardRecordsBadge'),
 
@@ -172,8 +174,7 @@
       courseName: document.getElementById('courseNameError'),
       courseTiming: document.getElementById('courseTimingError'),
       trainingMode: document.getElementById('trainingModeError'),
-      demoDate: document.getElementById('demoDateError'),
-      joiningStatus: document.getElementById('joiningStatusError')
+      demoDate: document.getElementById('demoDateError')
     }
   };
 
@@ -184,8 +185,10 @@
   // 3. Demo Records Storage & Dashboard Management
   // --------------------------------------------------------------------------
   const RECORDS_STORAGE_KEY = 'pumo_student_demo_records';
+  const SYNCED_STORAGE_FLAG = 'pumo_records_synced_with_sheet';
   let currentFilter = 'all';
   let currentSearchQuery = '';
+  let isSyncingWithSheet = false;
 
   /**
    * Normalizes course names strictly to the 10 approved IT courses
@@ -210,10 +213,10 @@
   function getStoredDemoRecords() {
     try {
       const stored = localStorage.getItem(RECORDS_STORAGE_KEY);
-      if (stored) {
+      if (stored !== null) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          // Normalize existing course names to ensure 100% compliance with approved IT courses
+        if (Array.isArray(parsed)) {
+          // Return exact array (even if empty [] because user deleted rows in Google Sheets)
           return parsed.map(rec => ({
             ...rec,
             courseName: normalizeCourseName(rec.courseName)
@@ -222,6 +225,11 @@
       }
     } catch (e) {
       console.warn('Failed parsing demo records from storage:', e);
+    }
+
+    // If user has previously synced with Google Sheet or cleared, keep empty
+    if (localStorage.getItem(SYNCED_STORAGE_FLAG) === 'true') {
+      return [];
     }
 
     // Default pre-populated seed records (Strictly using the 10 approved IT courses)
@@ -234,7 +242,6 @@
         courseTiming: '10:00 AM - 11:30 AM (Morning Slot)',
         trainingMode: 'Offline',
         demoDate: '2026-11-15',
-        joiningStatus: 'Joining',
         submissionTimestamp: new Date(Date.now() - 3600000 * 2).toISOString(),
         readableTimestamp: '14/11/2026, 11:15 AM'
       },
@@ -246,7 +253,6 @@
         courseTiming: '02:30 PM - 04:00 PM (Afternoon Slot)',
         trainingMode: 'Online',
         demoDate: '2026-11-16',
-        joiningStatus: 'Joining',
         submissionTimestamp: new Date(Date.now() - 3600000 * 5).toISOString(),
         readableTimestamp: '14/11/2026, 09:30 AM'
       },
@@ -258,7 +264,6 @@
         courseTiming: '06:30 PM - 08:00 PM (Working Professionals)',
         trainingMode: 'Offline',
         demoDate: '2026-11-17',
-        joiningStatus: 'Deciding / Follow Up',
         submissionTimestamp: new Date(Date.now() - 3600000 * 18).toISOString(),
         readableTimestamp: '13/11/2026, 06:45 PM'
       },
@@ -270,7 +275,6 @@
         courseTiming: '11:30 AM - 01:00 PM (Mid-Day Slot)',
         trainingMode: 'Offline',
         demoDate: '2026-11-18',
-        joiningStatus: 'Not Converted',
         submissionTimestamp: new Date(Date.now() - 3600000 * 26).toISOString(),
         readableTimestamp: '13/11/2026, 10:20 AM'
       },
@@ -282,7 +286,6 @@
         courseTiming: '04:00 PM - 05:30 PM (Evening Slot)',
         trainingMode: 'Online',
         demoDate: '2026-11-19',
-        joiningStatus: 'Joining',
         submissionTimestamp: new Date(Date.now() - 3600000 * 30).toISOString(),
         readableTimestamp: '12/11/2026, 04:30 PM'
       }
@@ -318,15 +321,254 @@
       .replace(/'/g, '&#39;');
   }
 
+  // --------------------------------------------------------------------------
+  // Live Google Sheet Two-Way Synchronization Engine
+  // --------------------------------------------------------------------------
+  function setSyncingState(isSyncing) {
+    isSyncingWithSheet = isSyncing;
+    if (DOM.inlineSyncBtn) {
+      if (isSyncing) DOM.inlineSyncBtn.classList.add('is-syncing');
+      else DOM.inlineSyncBtn.classList.remove('is-syncing');
+    }
+    if (DOM.modalSyncBtn) {
+      if (isSyncing) DOM.modalSyncBtn.classList.add('is-syncing');
+      else DOM.modalSyncBtn.classList.remove('is-syncing');
+    }
+    if (DOM.inlineSyncBtnText) {
+      DOM.inlineSyncBtnText.textContent = isSyncing ? 'Syncing...' : 'Sync Sheet';
+    }
+  }
+
+  function setSyncStatusIndicator(text, type = 'success') {
+    if (DOM.inlineSyncIndicator) {
+      DOM.inlineSyncIndicator.className = `sync-status-indicator status-${type}`;
+    }
+    if (DOM.inlineSyncStatusText) {
+      DOM.inlineSyncStatusText.textContent = text;
+    }
+  }
+
+  /**
+   * Parses Google Visualization API Query responses into structured records
+   */
+  function parseGvizTableRows(table) {
+    if (!table || !Array.isArray(table.rows)) return [];
+    const cols = table.cols || [];
+
+    let idxTimestamp = 0;
+    let idxRef = 1;
+    let idxName = 2;
+    let idxContact = 3;
+    let idxCourse = 4;
+    let idxTiming = 5;
+    let idxMode = 6;
+    let idxDate = 7;
+    let idxStatus = 8;
+
+    cols.forEach((col, idx) => {
+      const lbl = (col.label || col.id || '').toLowerCase();
+      if (lbl.includes('ref') || lbl.includes('id')) idxRef = idx;
+      else if (lbl.includes('name') || lbl.includes('student')) idxName = idx;
+      else if (lbl.includes('contact') || lbl.includes('mobile') || lbl.includes('phone')) idxContact = idx;
+      else if (lbl.includes('course') || lbl.includes('program')) idxCourse = idx;
+      else if (lbl.includes('time') || lbl.includes('slot')) idxTiming = idx;
+      else if (lbl.includes('mode')) idxMode = idx;
+      else if (lbl.includes('date')) idxDate = idx;
+      else if (lbl.includes('status') || lbl.includes('convert') || lbl.includes('remark')) idxStatus = idx;
+      else if (lbl.includes('timestamp')) idxTimestamp = idx;
+    });
+
+    const records = [];
+
+    table.rows.forEach((rowObj, rIdx) => {
+      const cells = rowObj.c || [];
+      const getVal = (idx) => {
+        if (idx < 0 || idx >= cells.length || !cells[idx]) return '';
+        const cell = cells[idx];
+        return (cell.f !== undefined && cell.f !== null) ? String(cell.f) : (cell.v !== undefined && cell.v !== null ? String(cell.v) : '');
+      };
+
+      const name = getVal(idxName).trim();
+      const contact = getVal(idxContact).replace(/^'/, '').trim();
+      const refId = getVal(idxRef).trim() || `PT-DEMO-${rIdx + 1000}`;
+      const course = getVal(idxCourse).trim() || 'Python Full Stack';
+      const timing = getVal(idxTiming).trim() || '10:00 AM - 11:30 AM (Morning Slot)';
+      const mode = getVal(idxMode).trim() || 'Offline';
+      const demoDate = getVal(idxDate).trim() || '';
+      const rawStatus = getVal(idxStatus).trim();
+      const timestamp = getVal(idxTimestamp).trim() || new Date().toISOString();
+
+      if (!name && !contact && !refId) return; // Skip empty row
+
+      records.push({
+        referenceId: refId,
+        fullName: name,
+        contactNumber: contact,
+        courseName: course,
+        courseTiming: timing,
+        trainingMode: mode,
+        demoDate: demoDate,
+        readableTimestamp: timestamp,
+        submissionTimestamp: timestamp
+      });
+    });
+
+    return records;
+  }
+
+  /**
+   * Fetches current data directly from the Google Sheet.
+   * If rows were manually deleted in the Sheet, this automatically clears them from the website!
+   */
+  async function syncRecordsWithGoogleSheet(showFeedback = false) {
+    if (isSyncingWithSheet) return;
+    setSyncingState(true);
+    setSyncStatusIndicator('Syncing live sheet...', 'syncing');
+
+    try {
+      const scriptUrl = CONFIG.getScriptUrl();
+      const timestamp = Date.now();
+      let recordsFetched = null;
+
+      // Method 1: Google Apps Script Web App doGet API
+      try {
+        const getUrl = `${scriptUrl}?action=get&t=${timestamp}`;
+        const res = await fetch(getUrl, { method: 'GET' });
+        if (res.ok) {
+          const json = await res.json();
+          if (json && Array.isArray(json.records)) {
+            recordsFetched = json.records;
+            console.log(`[Pumo Sync] Retrieved ${recordsFetched.length} live records from Google Apps Script.`);
+          }
+        }
+      } catch (scriptErr) {
+        console.warn('[Pumo Sync] Apps Script doGet notice:', scriptErr);
+      }
+
+      // Method 2: Google Visualization API (Direct live query from Google Sheets)
+      if (recordsFetched === null) {
+        try {
+          const gvizUrl = `https://docs.google.com/spreadsheets/d/${CONFIG.SPREADSHEET_ID}/gviz/tq?tqx=out:json&t=${timestamp}`;
+          const gvizRes = await fetch(gvizUrl);
+          if (gvizRes.ok) {
+            const rawText = await gvizRes.text();
+            const match = rawText.match(/google\.visualization\.Query\.setResponse\(([\s\S]+)\);/);
+            if (match && match[1]) {
+              const gvizData = JSON.parse(match[1]);
+              if (gvizData && gvizData.table) {
+                recordsFetched = parseGvizTableRows(gvizData.table);
+                console.log(`[Pumo Sync] Retrieved ${recordsFetched.length} live records via GViz endpoint.`);
+              }
+            }
+          }
+        } catch (gvizErr) {
+          console.warn('[Pumo Sync] Google Sheets GViz fallback notice:', gvizErr);
+        }
+      }
+
+      // If we received live rows from Google Sheets (or an empty array [] because user deleted rows)
+      if (Array.isArray(recordsFetched)) {
+        const normalized = recordsFetched.map(r => ({
+          ...r,
+          courseName: normalizeCourseName(r.courseName)
+        }));
+
+        // AUTOMATIC DELETE FIX: Overwrite local records with the sheet's current live state!
+        // Any rows manually deleted in Google Sheets are now deleted here automatically.
+        saveStoredDemoRecords(normalized);
+        localStorage.setItem(SYNCED_STORAGE_FLAG, 'true');
+        renderRecordsTable();
+        updateRecordsBadgeCounts();
+        setSyncStatusIndicator(`Live Sheet Synced (${normalized.length})`, 'success');
+
+        if (showFeedback) {
+          if (normalized.length === 0) {
+            showAlert('success', 'Google Sheet Synced', 'Your Google Sheet has 0 candidate rows. Deleted records were removed.');
+          } else {
+            showAlert('success', 'Google Sheet Synced', `Loaded ${normalized.length} student demo record(s) directly from your Google Sheet.`);
+          }
+        }
+        return true;
+      } else {
+        setSyncStatusIndicator('Sync Ready', 'neutral');
+        if (showFeedback) {
+          showAlert('warning', 'Live Sync Notice', 'Could not read directly from Google Sheets. Ensure your Apps Script deployment is set to "Who has access: Anyone".');
+        }
+        return false;
+      }
+    } catch (err) {
+      console.error('[Pumo Sync] Error syncing records:', err);
+      setSyncStatusIndicator('Sync Offline', 'neutral');
+      if (showFeedback) {
+        showAlert('error', 'Sync Failed', 'Unable to reach Google Sheets. Please check your network connection.');
+      }
+      return false;
+    } finally {
+      setSyncingState(false);
+    }
+  }
+
+  /**
+   * Deletes a student demo record both locally and in Google Sheets
+   */
+  async function deleteStudentDemoRecord(refId, studentName) {
+    if (!refId) return;
+    const confirmMsg = studentName 
+      ? `Are you sure you want to delete demo record for "${studentName}" (${refId})?\n\nThis will remove it from this website and Google Sheets.`
+      : `Are you sure you want to delete demo record ${refId}?`;
+
+    if (!confirm(confirmMsg)) return;
+
+    // 1. Instant optimistic UI deletion
+    const records = getStoredDemoRecords();
+    const updated = records.filter(r => r.referenceId !== refId);
+    saveStoredDemoRecords(updated);
+    localStorage.setItem(SYNCED_STORAGE_FLAG, 'true');
+    renderRecordsTable();
+    updateRecordsBadgeCounts();
+    showAlert('success', 'Record Deleted', `Record ${refId} was deleted.`);
+
+    // 2. Dispatch delete request to Google Apps Script
+    try {
+      const deleteUrl = `${CONFIG.getScriptUrl()}?action=delete&refId=${encodeURIComponent(refId)}&t=${Date.now()}`;
+      await fetch(deleteUrl, { method: 'GET', mode: 'no-cors' });
+      console.log('[Pumo Delete] Delete signal sent for:', refId);
+    } catch (err) {
+      console.warn('[Pumo Delete] Background delete notice:', err);
+    }
+  }
+
+  /**
+   * Clears all cached demo records and resets state
+   */
+  function handleClearAllLocalRecords() {
+    if (confirm('Clear all stored candidate records from this browser? (Clicking "Sync Sheet" will reload live rows from Google Sheets at any time.)')) {
+      saveStoredDemoRecords([]);
+      localStorage.setItem(SYNCED_STORAGE_FLAG, 'true');
+      renderRecordsTable();
+      updateRecordsBadgeCounts();
+      setSyncStatusIndicator('Cleared (0 records)', 'neutral');
+      showAlert('success', 'Records Cleared', 'All local records have been cleared. Click "Sync Sheet" to pull live data from Google Sheets.');
+    }
+  }
+
+  function handleRecordDeleteClick(e) {
+    const deleteBtn = e.target.closest('.btn-record-delete');
+    if (!deleteBtn) return;
+    e.stopPropagation();
+    const refId = deleteBtn.getAttribute('data-refid');
+    const studentName = deleteBtn.getAttribute('data-name');
+    deleteStudentDemoRecord(refId, studentName);
+  }
+
   function renderRecordsTable() {
     const records = getStoredDemoRecords();
     updateRecordsBadgeCounts();
 
     const filtered = records.filter(rec => {
       if (currentFilter !== 'all') {
-        if (currentFilter === 'Joining' && rec.joiningStatus !== 'Joining') return false;
-        if (currentFilter === 'Not Converted' && rec.joiningStatus !== 'Not Converted') return false;
-        if (currentFilter === 'Deciding' && !rec.joiningStatus.includes('Deciding')) return false;
+        if (currentFilter === 'Offline' && !(rec.trainingMode || '').includes('Offline')) return false;
+        if (currentFilter === 'Online' && !(rec.trainingMode || '').includes('Online')) return false;
       }
       if (currentSearchQuery) {
         const q = currentSearchQuery.toLowerCase();
@@ -354,16 +596,6 @@
 
         filtered.forEach((rec, idx) => {
           const tr = document.createElement('tr');
-          
-          let statusClass = 'status-joining';
-          let statusBadgeLabel = 'Joining (Converted)';
-          if (rec.joiningStatus === 'Not Converted') {
-            statusClass = 'status-not-converted';
-            statusBadgeLabel = 'Not Converted';
-          } else if (rec.joiningStatus && rec.joiningStatus.includes('Deciding')) {
-            statusClass = 'status-deciding';
-            statusBadgeLabel = 'Deciding / Follow Up';
-          }
 
           const modeBadgeClass = (rec.trainingMode && rec.trainingMode.includes('Online')) ? 'mode-tag-online' : 'mode-tag-offline';
           const cleanPhone = (rec.contactNumber || '').replace(/\D/g, '');
@@ -381,14 +613,14 @@
               <span class="mode-tag ${modeBadgeClass}">${escapeHtml(rec.trainingMode || 'Offline')}</span>
             </td>
             <td data-label="Demo Date">${formatDateDisplay(rec.demoDate)}</td>
-            <td data-label="Joining Status">
-              <span class="badge-tag-status ${statusClass}">${statusBadgeLabel}</span>
-            </td>
             <td data-label="Action">
               <div class="row-actions-group">
                 <a href="https://wa.me/91${cleanPhone}?text=Hello%20${encodeURIComponent(rec.fullName)},%20this%20is%20Pumo%20Technovation%20regarding%20your%20upcoming%20${encodeURIComponent(rec.courseName)}%20technical%20demo%20session." target="_blank" rel="noopener noreferrer" class="btn-table-whatsapp" title="Message on WhatsApp">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                 </a>
+                <button type="button" class="btn-record-delete" data-refid="${escapeHtml(rec.referenceId)}" data-name="${escapeHtml(rec.fullName)}" title="Delete candidate record">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                </button>
               </div>
             </td>
           `;
@@ -407,16 +639,6 @@
         if (DOM.inlineRecordsEmpty) DOM.inlineRecordsEmpty.classList.add('hidden');
 
         filtered.forEach(rec => {
-          let statusClass = 'status-joining';
-          let statusBadgeLabel = 'Joining (Converted)';
-          if (rec.joiningStatus === 'Not Converted') {
-            statusClass = 'status-not-converted';
-            statusBadgeLabel = 'Not Converted';
-          } else if (rec.joiningStatus && rec.joiningStatus.includes('Deciding')) {
-            statusClass = 'status-deciding';
-            statusBadgeLabel = 'Deciding / Follow Up';
-          }
-
           const modeBadgeClass = (rec.trainingMode && rec.trainingMode.includes('Online')) ? 'mode-tag-online' : 'mode-tag-offline';
           const cleanPhone = (rec.contactNumber || '').replace(/\D/g, '');
 
@@ -428,7 +650,12 @@
                 <div class="record-item-name">${escapeHtml(rec.fullName)}</div>
                 <span class="record-item-ref">${escapeHtml(rec.referenceId || 'N/A')}</span>
               </div>
-              <span class="badge-tag-status ${statusClass}">${statusBadgeLabel}</span>
+              <div class="record-top-right-actions">
+                <span class="mode-tag ${modeBadgeClass}">${escapeHtml(rec.trainingMode || 'Offline')}</span>
+                <button type="button" class="btn-record-delete" data-refid="${escapeHtml(rec.referenceId)}" data-name="${escapeHtml(rec.fullName)}" title="Delete record">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                </button>
+              </div>
             </div>
             <div class="record-item-details">
               <div class="record-detail-field">
@@ -472,21 +699,18 @@
   function updateRecordsBadgeCounts() {
     const records = getStoredDemoRecords();
     const total = records.length;
-    const converted = records.filter(r => r.joiningStatus === 'Joining').length;
-    const notConverted = records.filter(r => r.joiningStatus === 'Not Converted').length;
-    const deciding = records.filter(r => (r.joiningStatus || '').includes('Deciding')).length;
+    const offlineCount = records.filter(r => (r.trainingMode || '').includes('Offline')).length;
+    const onlineCount = records.filter(r => (r.trainingMode || '').includes('Online')).length;
 
     // Modal KPIs
     if (DOM.kpiTotalDemos) DOM.kpiTotalDemos.textContent = total;
-    if (DOM.kpiConverted) DOM.kpiConverted.textContent = converted;
-    if (DOM.kpiNotConverted) DOM.kpiNotConverted.textContent = notConverted;
-    if (DOM.kpiDeciding) DOM.kpiDeciding.textContent = deciding;
+    if (DOM.kpiOffline) DOM.kpiOffline.textContent = offlineCount;
+    if (DOM.kpiOnline) DOM.kpiOnline.textContent = onlineCount;
 
     // Modal Filter Chip Counts
     if (DOM.chipAllCount) DOM.chipAllCount.textContent = total;
-    if (DOM.chipJoiningCount) DOM.chipJoiningCount.textContent = converted;
-    if (DOM.chipNotConvCount) DOM.chipNotConvCount.textContent = notConverted;
-    if (DOM.chipDecidingCount) DOM.chipDecidingCount.textContent = deciding;
+    if (DOM.chipOfflineCount) DOM.chipOfflineCount.textContent = offlineCount;
+    if (DOM.chipOnlineCount) DOM.chipOnlineCount.textContent = onlineCount;
 
     // Header & Card Badges
     if (DOM.navRecordsBadge) DOM.navRecordsBadge.textContent = total;
@@ -494,9 +718,8 @@
 
     // Inline Card KPIs (Mobile View Direct Display)
     if (DOM.inlineKpiTotal) DOM.inlineKpiTotal.textContent = total;
-    if (DOM.inlineKpiConverted) DOM.inlineKpiConverted.textContent = converted;
-    if (DOM.inlineKpiNotConverted) DOM.inlineKpiNotConverted.textContent = notConverted;
-    if (DOM.inlineKpiDeciding) DOM.inlineKpiDeciding.textContent = deciding;
+    if (DOM.inlineKpiOffline) DOM.inlineKpiOffline.textContent = offlineCount;
+    if (DOM.inlineKpiOnline) DOM.inlineKpiOnline.textContent = onlineCount;
     if (DOM.inlineRecordsBadge) DOM.inlineRecordsBadge.textContent = total;
   }
 
@@ -515,7 +738,6 @@
       'Course Timing',
       'Training Mode',
       'Date of Demo',
-      'Joining Status',
       'Submission Timestamp'
     ];
 
@@ -530,7 +752,6 @@
         `"${(r.courseTiming || '').replace(/"/g, '""')}"`,
         `"${(r.trainingMode || '').replace(/"/g, '""')}"`,
         `"${(r.demoDate || '').replace(/"/g, '""')}"`,
-        `"${(r.joiningStatus || '').replace(/"/g, '""')}"`,
         `"${(r.readableTimestamp || r.submissionTimestamp || '').replace(/"/g, '""')}"`
       ];
       csvRows.push(row.join(','));
@@ -652,11 +873,35 @@
       DOM.exportRecordsCsvBtn.addEventListener('click', exportRecordsToCsv);
     }
 
+    // Live Sync Buttons (Pulls live data from Google Sheets & removes deleted rows)
+    if (DOM.inlineSyncBtn) {
+      DOM.inlineSyncBtn.addEventListener('click', () => syncRecordsWithGoogleSheet(true));
+    }
+    if (DOM.modalSyncBtn) {
+      DOM.modalSyncBtn.addEventListener('click', () => syncRecordsWithGoogleSheet(true));
+    }
+
+    // Clear Local Cached Records Buttons
+    if (DOM.inlineClearLocalBtn) {
+      DOM.inlineClearLocalBtn.addEventListener('click', handleClearAllLocalRecords);
+    }
+    if (DOM.modalClearLocalBtn) {
+      DOM.modalClearLocalBtn.addEventListener('click', handleClearAllLocalRecords);
+    }
+
+    // Refresh Records Button
     if (DOM.refreshRecordsBtn) {
       DOM.refreshRecordsBtn.addEventListener('click', () => {
-        renderRecordsTable();
-        updateRecordsBadgeCounts();
+        syncRecordsWithGoogleSheet(true);
       });
+    }
+
+    // Individual Record Deletion Delegation
+    if (DOM.recordsTableBody) {
+      DOM.recordsTableBody.addEventListener('click', handleRecordDeleteClick);
+    }
+    if (DOM.inlineRecordsList) {
+      DOM.inlineRecordsList.addEventListener('click', handleRecordDeleteClick);
     }
 
     renderRecordsTable();
@@ -698,6 +943,14 @@
     }
     // Perform initial passive endpoint probe
     runApiDiagnostics(false);
+
+    // Initial Live Sync with Google Sheets (removes any rows deleted in Excel / Google Sheets)
+    syncRecordsWithGoogleSheet(false);
+
+    // Periodic Background Sync: check every 45 seconds so manual edits/deletions in Sheets mirror automatically
+    setInterval(() => {
+      syncRecordsWithGoogleSheet(false);
+    }, 45000);
   }
 
   function setupMinDate() {
@@ -1044,14 +1297,6 @@
         });
       });
     }
-
-    if (DOM.joiningStatusRadios) {
-      DOM.joiningStatusRadios.forEach((radio) => {
-        radio.addEventListener('change', () => {
-          if (DOM.errors.joiningStatus) DOM.errors.joiningStatus.textContent = '';
-        });
-      });
-    }
   }
 
   function validateField(fieldName) {
@@ -1153,16 +1398,6 @@
       if (DOM.errors.trainingMode) DOM.errors.trainingMode.textContent = '';
     }
 
-    const selectedJoiningStatus = document.querySelector('input[name="joiningStatus"]:checked');
-    if (!selectedJoiningStatus) {
-      isValid = false;
-      if (DOM.errors.joiningStatus) {
-        DOM.errors.joiningStatus.textContent = 'Please select joining status (Joining, Not Converted, or Deciding).';
-      }
-    } else {
-      if (DOM.errors.joiningStatus) DOM.errors.joiningStatus.textContent = '';
-    }
-
     if (!isValid && firstInvalidElement) {
       firstInvalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       firstInvalidElement.focus();
@@ -1234,13 +1469,11 @@
       params.append('demoDate', formData.demoDate);
       params.append('date', formData.demoDate);
 
-      // 7. Joining or Not Convert Status
-      params.append('joiningStatus', formData.joiningStatus);
-      params.append('status', formData.joiningStatus);
-      params.append('convert', formData.joiningStatus);
-      params.append('conversion', formData.joiningStatus);
-      params.append('remarks', `Joining Status: ${formData.joiningStatus} | Mode: ${formData.trainingMode} | Timing: ${formData.courseTiming}`);
-      params.append('comments', `Joining Status: ${formData.joiningStatus}`);
+      // 7. Status & Remarks
+      params.append('joiningStatus', 'Demo Registered');
+      params.append('status', 'Demo Registered');
+      params.append('remarks', `Training Mode: ${formData.trainingMode} | Timing: ${formData.courseTiming}`);
+      params.append('comments', `Training Mode: ${formData.trainingMode}`);
 
       // Branch & Compatibility
       params.append('branchLocation', formData.trainingMode.includes('Online') ? 'Online Live Virtual Classroom' : 'Poonamallee / Chennai Campus');
@@ -1309,7 +1542,6 @@
   }
 
   function extractFormData() {
-    const selectedStatus = document.querySelector('input[name="joiningStatus"]:checked');
     const selectedMode = document.querySelector('input[name="trainingMode"]:checked');
     const now = new Date();
     const randomHex = Math.floor(1000 + Math.random() * 9000);
@@ -1323,7 +1555,6 @@
       courseTiming: DOM.courseTiming ? DOM.courseTiming.value : '10:00 AM - 11:30 AM (Morning Slot)',
       trainingMode: selectedMode ? selectedMode.value : 'Offline',
       demoDate: DOM.demoDate.value,
-      joiningStatus: selectedStatus ? selectedStatus.value : 'Joining',
       submissionTimestamp: now.toISOString(),
       readableTimestamp: now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
     };
@@ -1345,7 +1576,6 @@
     if (DOM.receiptTiming) DOM.receiptTiming.textContent = formData.courseTiming;
     if (DOM.receiptMode) DOM.receiptMode.textContent = formData.trainingMode;
     if (DOM.receiptDemoDate) DOM.receiptDemoDate.textContent = formatDateDisplay(formData.demoDate);
-    if (DOM.receiptJoiningStatus) DOM.receiptJoiningStatus.textContent = formData.joiningStatus;
 
     // Save record to persistent local store & refresh dashboard
     addDemoRecord({
@@ -1356,7 +1586,6 @@
       courseTiming: formData.courseTiming,
       trainingMode: formData.trainingMode,
       demoDate: formData.demoDate,
-      joiningStatus: formData.joiningStatus,
       submissionTimestamp: formData.submissionTimestamp,
       readableTimestamp: formData.readableTimestamp
     });
@@ -1453,9 +1682,6 @@
 
     const defaultModeRadio = document.getElementById('modeOffline');
     if (defaultModeRadio) defaultModeRadio.checked = true;
-
-    const defaultJoiningRadio = document.getElementById('statusJoining');
-    if (defaultJoiningRadio) defaultJoiningRadio.checked = true;
 
     setupMinDate();
   }
