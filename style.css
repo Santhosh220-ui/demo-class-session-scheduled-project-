@@ -117,13 +117,76 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   2. Header & Navigation
+   2. Header & Navigation (With Official Pumo Branding)
    -------------------------------------------------------------------------- */
+.top-announcement-bar {
+  background-color: #07192c;
+  color: var(--slate-300);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.75rem;
+  padding: 0.35rem 0;
+}
+
+.top-bar-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.global-presence {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.global-label {
+  color: var(--slate-400);
+  font-weight: 600;
+}
+
+.flags-group {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.flag-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 500;
+  color: var(--slate-200);
+}
+
+.flag-item img {
+  display: inline-block;
+  border-radius: 2px;
+}
+
+.top-contact-info {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.partner-badge-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #93c5fd;
+  font-weight: 600;
+}
+
 .app-header {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--slate-200);
@@ -133,7 +196,7 @@ body {
 .header-container {
   max-width: 1140px;
   margin: 0 auto;
-  padding: 0.85rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -144,39 +207,20 @@ body {
   display: flex;
   align-items: center;
   gap: 0.85rem;
+}
+
+.brand-logo-link {
+  display: flex;
+  align-items: center;
   text-decoration: none;
 }
 
-.brand-logo-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--primary-700), var(--primary-900));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--white);
-  box-shadow: 0 4px 10px rgba(13, 71, 161, 0.25);
-  flex-shrink: 0;
-}
-
-.brand-logo-icon.small-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-sm);
-}
-
-.brand-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.brand-title {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--primary-900);
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+.brand-official-logo {
+  height: 42px;
+  width: auto;
+  max-width: 190px;
+  object-fit: contain;
+  display: block;
 }
 
 .brand-title span {
@@ -271,7 +315,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   3. Main Hero Section
+   3. Main Hero Section (With Official Pumo Banners & Badges)
    -------------------------------------------------------------------------- */
 .main-content {
   flex: 1;
@@ -279,35 +323,31 @@ body {
 }
 
 .hero-section {
-  background: linear-gradient(135deg, #0b2f56 0%, #1565c0 100%);
+  background: 
+    linear-gradient(135deg, rgba(8, 29, 51, 0.94) 0%, rgba(13, 71, 161, 0.88) 100%),
+    url('https://pumotechnovation.com/assets/banner/banner-hero.webp') center/cover no-repeat;
   color: var(--white);
-  padding: 3rem 1.5rem 4.5rem;
+  padding: 3rem 1.5rem 5rem;
   position: relative;
   overflow: hidden;
 }
 
-.hero-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 32px 32px;
-  background-position: 0 0, 16px 16px;
-  opacity: 0.6;
-  pointer-events: none;
+.hero-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-grid-layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 2.5rem;
+  align-items: center;
 }
 
 .hero-content {
-  position: relative;
-  z-index: 2;
-  max-width: 900px;
-  margin: 0 auto;
-  text-align: center;
+  text-align: left;
 }
 
 .badge-category {
@@ -335,27 +375,26 @@ body {
 .hero-subtitle {
   font-size: 1.05rem;
   color: rgba(255, 255, 255, 0.9);
-  max-width: 720px;
-  margin: 0 auto 1.8rem;
+  margin: 0 0 1.8rem;
   line-height: 1.55;
   font-weight: 400;
 }
 
 .value-props {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.2rem;
+  flex-direction: column;
+  gap: 0.65rem;
 }
 
 .prop-item {
-  display: flex;
+  display: inline-flex;
+  align-self: flex-start;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(6px);
-  padding: 0.45rem 0.9rem;
+  padding: 0.45rem 0.95rem;
   border-radius: var(--radius-full);
   font-size: 0.85rem;
   font-weight: 600;
@@ -365,6 +404,110 @@ body {
 .prop-item svg {
   color: #6ee7b7; /* Bright emerald */
   flex-shrink: 0;
+}
+
+/* Hero Feature Banner Card */
+.hero-banner-card {
+  position: relative;
+}
+
+.hero-banner-frame {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius-lg);
+  padding: 0.6rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition-normal);
+}
+
+.hero-banner-frame:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.hero-placement-img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  display: block;
+  object-fit: cover;
+}
+
+.hero-banner-tag {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(8, 29, 51, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  color: var(--white);
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-full);
+  font-size: 0.775rem;
+  font-weight: 700;
+}
+
+/* Accreditations Strip */
+.accreditations-strip {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.accreditation-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #bfdbfe;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.accreditations-logos-marquee {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.acc-logo {
+  height: 32px;
+  width: auto;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  object-fit: contain;
+  transition: transform var(--transition-fast);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.acc-logo:hover {
+  transform: translateY(-2px);
+  background-color: var(--white);
+}
+
+/* Pumo Graduation Cap Icon in Form Header */
+.pumo-cap-icon-box {
+  background-color: var(--white) !important;
+  border: 1px solid var(--slate-200);
+  padding: 4px;
+}
+
+.pumo-cap-img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  display: block;
 }
 
 /* --------------------------------------------------------------------------
@@ -1201,12 +1344,13 @@ textarea.form-control {
   background-color: var(--white);
   border: 1px solid var(--slate-200);
   border-radius: var(--radius-md);
-  padding: 1.5rem;
+  padding: 0;
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-normal);
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: hidden;
 }
 
 .branch-card:hover {
@@ -1215,18 +1359,51 @@ textarea.form-control {
   border-color: var(--primary-400);
 }
 
+.branch-card-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 165px;
+  overflow: hidden;
+  background-color: var(--slate-800);
+}
+
+.branch-card-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.branch-card:hover .branch-card-media {
+  transform: scale(1.08);
+}
+
 .branch-card-badge {
-  display: inline-block;
-  align-self: flex-start;
+  position: absolute;
+  bottom: 0.65rem;
+  left: 0.65rem;
+  z-index: 2;
   font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 0.2rem 0.55rem;
-  background-color: var(--primary-50);
-  color: var(--primary-700);
+  padding: 0.25rem 0.65rem;
+  background-color: rgba(8, 29, 51, 0.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--radius-sm);
-  margin-bottom: 0.8rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  margin-bottom: 0;
+}
+
+.branch-card-content {
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .branch-card-name {
@@ -1247,7 +1424,7 @@ textarea.form-control {
 .branch-features {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.35rem;
   font-size: 0.775rem;
   font-weight: 600;
   color: var(--primary-700);
@@ -1272,6 +1449,14 @@ textarea.form-control {
   display: grid;
   grid-template-columns: 2fr 1fr 1.2fr;
   gap: 2.5rem;
+}
+
+.footer-brand-logo {
+  height: 38px;
+  width: auto;
+  max-width: 180px;
+  object-fit: contain;
+  display: block;
 }
 
 .footer-brand-title {
@@ -1716,7 +1901,7 @@ textarea.form-control {
 }
 
 /* --------------------------------------------------------------------------
-   12. Floating Desktop-to-Mobile View Switcher
+   12. Floating Desktop-to-Mobile View Switcher & WhatsApp Support
    -------------------------------------------------------------------------- */
 .mobile-preview-dock {
   position: fixed;
@@ -1754,6 +1939,49 @@ textarea.form-control {
   line-height: 1;
 }
 
+/* Floating WhatsApp Quick Support */
+.whatsapp-floating-dock {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  z-index: 998;
+}
+
+.btn-whatsapp-float {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  background-color: #25d366;
+  border-radius: 50%;
+  box-shadow: 0 10px 25px -4px rgba(37, 211, 102, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-normal);
+  text-decoration: none;
+  animation: floatBounce 3s ease-in-out infinite;
+}
+
+.btn-whatsapp-float img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  display: block;
+}
+
+.btn-whatsapp-float:hover {
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 14px 30px -4px rgba(37, 211, 102, 0.65);
+}
+
+@keyframes floatBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
 /* --------------------------------------------------------------------------
    13. Desktop Mobile Simulator Viewport Mode (.mobile-view-mode)
    -------------------------------------------------------------------------- */
@@ -1764,6 +1992,10 @@ body.mobile-view-mode {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+body.mobile-view-mode .whatsapp-floating-dock {
+  left: max(1rem, calc(50% - 207px + 1rem));
 }
 
 body.mobile-view-mode .app-header,
@@ -1814,6 +2046,11 @@ body.mobile-view-mode .app-footer {
    14. Native & Simulator Responsive Styles (Mobile Overhaul)
    -------------------------------------------------------------------------- */
 @media (max-width: 992px) {
+  .hero-grid-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
   .branches-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1849,6 +2086,28 @@ body.mobile-view-mode .app-footer {
     display: none !important;
   }
 
+  /* Compact Announcement Bar on Mobile */
+  .top-announcement-bar {
+    font-size: 0.7rem;
+    padding: 0.3rem 0;
+  }
+
+  .top-bar-container {
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0 0.75rem;
+    text-align: center;
+  }
+
+  .flags-group {
+    justify-content: center;
+    gap: 0.45rem;
+  }
+
+  .top-contact-info {
+    display: none;
+  }
+
   /* Compact Mobile Header */
   .app-header {
     padding: 0.65rem 0;
@@ -1857,6 +2116,11 @@ body.mobile-view-mode .app-footer {
   .header-container {
     padding: 0 1rem;
     gap: 0.5rem;
+  }
+
+  .brand-official-logo {
+    height: 34px;
+    max-width: 145px;
   }
 
   .brand-logo-icon {
@@ -1908,6 +2172,33 @@ body.mobile-view-mode .app-footer {
   /* Mobile Hero Section */
   .hero-section {
     padding: 2.25rem 1rem 3.75rem;
+  }
+
+  .hero-grid-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .hero-banner-card {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .accreditations-strip {
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    justify-content: center;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .accreditations-logos-marquee {
+    justify-content: center;
+  }
+
+  .acc-logo {
+    height: 26px;
+    padding: 2px 6px;
   }
 
   .hero-title {
@@ -2103,7 +2394,31 @@ body.mobile-view-mode .app-footer {
   }
 
   .branch-card {
-    padding: 1.25rem;
+    padding: 0 !important;
+  }
+
+  .branch-card-img-wrap {
+    height: 180px;
+  }
+
+  .branch-card-content {
+    padding: 1.15rem 1rem;
+  }
+
+  /* Floating WhatsApp on Mobile */
+  .whatsapp-floating-dock {
+    bottom: 1rem;
+    left: 1rem;
+  }
+
+  .btn-whatsapp-float {
+    width: 48px;
+    height: 48px;
+  }
+
+  .btn-whatsapp-float img {
+    width: 30px;
+    height: 30px;
   }
 
   /* Modal on Mobile */
