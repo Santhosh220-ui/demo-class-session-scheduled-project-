@@ -906,6 +906,128 @@ textarea.form-control {
 /* --------------------------------------------------------------------------
    5. Radio Cards & Interactive Branch Pills
    -------------------------------------------------------------------------- */
+/* Joining / Conversion Status Cards (Joining or Not Convert) */
+.status-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+}
+
+.status-card {
+  border: 1.5px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  padding: 0.95rem 1rem;
+  cursor: pointer;
+  background-color: var(--slate-50);
+  transition: all var(--transition-fast);
+  display: block;
+  position: relative;
+}
+
+.status-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.status-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.status-radio-circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--slate-300);
+  display: inline-block;
+  position: relative;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.status-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+
+.status-pill-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  margin-left: auto;
+}
+
+.badge-green {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.badge-red {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.badge-amber {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.status-desc {
+  font-size: 0.775rem;
+  color: var(--slate-600);
+  line-height: 1.4;
+  padding-left: 1.6rem;
+}
+
+.status-card:hover {
+  border-color: var(--primary-400);
+  background-color: var(--white);
+}
+
+/* Checked states */
+.status-card-joining:has(input[type="radio"]:checked) {
+  border-color: #059669;
+  background-color: #ecfdf5;
+  box-shadow: 0 0 0 1px #059669;
+}
+
+.status-card-joining input[type="radio"]:checked + .status-card-body .status-radio-circle {
+  border-color: #059669;
+  background-color: #059669;
+  box-shadow: inset 0 0 0 3px var(--white);
+}
+
+.status-card-not-converted:has(input[type="radio"]:checked) {
+  border-color: #dc2626;
+  background-color: #fef2f2;
+  box-shadow: 0 0 0 1px #dc2626;
+}
+
+.status-card-not-converted input[type="radio"]:checked + .status-card-body .status-radio-circle {
+  border-color: #dc2626;
+  background-color: #dc2626;
+  box-shadow: inset 0 0 0 3px var(--white);
+}
+
+.status-card-deciding:has(input[type="radio"]:checked) {
+  border-color: #d97706;
+  background-color: #fffbeb;
+  box-shadow: 0 0 0 1px #d97706;
+}
+
+.status-card-deciding input[type="radio"]:checked + .status-card-body .status-radio-circle {
+  border-color: #d97706;
+  background-color: #d97706;
+  box-shadow: inset 0 0 0 3px var(--white);
+}
+
 /* Training Mode Radio Cards */
 .radio-card-grid {
   display: grid;
@@ -2015,10 +2137,10 @@ textarea.form-control {
 }
 
 /* --------------------------------------------------------------------------
-   13. Desktop Mobile Simulator Viewport Mode (.mobile-view-mode)
+   13. Dedicated Mobile View Mode (.mobile-view-mode)
    -------------------------------------------------------------------------- */
 body.mobile-view-mode {
-  background: #090e17 !important;
+  background: #080f1d !important;
   padding: 1.5rem 0 3rem;
   min-height: 100vh;
   display: flex;
@@ -2026,37 +2148,47 @@ body.mobile-view-mode {
   align-items: center;
 }
 
-body.mobile-view-mode .whatsapp-floating-dock {
-  left: max(1rem, calc(50% - 207px + 1rem));
-}
-
+body.mobile-view-mode .top-announcement-bar,
 body.mobile-view-mode .app-header,
 body.mobile-view-mode .main-content,
 body.mobile-view-mode .app-footer {
   width: 100%;
-  max-width: 414px; /* Standard flagship smartphone width (iPhone 15/16 Pro Max) */
+  max-width: 440px; /* Flagship smartphone width */
   margin-left: auto;
   margin-right: auto;
+  box-sizing: border-box;
 }
 
-body.mobile-view-mode .app-header {
-  border-top-left-radius: 36px;
-  border-top-right-radius: 36px;
+/* Smartphone Bezel Top & Dynamic Island Notch */
+body.mobile-view-mode .top-announcement-bar {
+  border-top-left-radius: 42px;
+  border-top-right-radius: 42px;
   border-left: 10px solid #1e293b;
   border-right: 10px solid #1e293b;
   border-top: 10px solid #1e293b;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
   position: relative;
+  z-index: 55;
+  padding-top: 0.75rem;
 }
 
-body.mobile-view-mode .app-header::before {
+body.mobile-view-mode .top-announcement-bar::before {
   content: "";
   display: block;
-  width: 110px;
-  height: 18px;
-  background-color: #0f172a;
+  width: 120px;
+  height: 22px;
+  background-color: #020617;
   border-radius: var(--radius-full);
-  margin: -0.25rem auto 0.5rem;
+  margin: 0 auto 0.5rem;
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.15);
+}
+
+body.mobile-view-mode .app-header {
+  border-left: 10px solid #1e293b;
+  border-right: 10px solid #1e293b;
+  border-radius: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  position: relative;
 }
 
 body.mobile-view-mode .main-content {
@@ -2066,12 +2198,71 @@ body.mobile-view-mode .main-content {
 }
 
 body.mobile-view-mode .app-footer {
-  border-bottom-left-radius: 36px;
-  border-bottom-right-radius: 36px;
+  border-bottom-left-radius: 42px;
+  border-bottom-right-radius: 42px;
   border-left: 10px solid #1e293b;
   border-right: 10px solid #1e293b;
   border-bottom: 10px solid #1e293b;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+}
+
+body.mobile-view-mode .app-footer::after {
+  content: "";
+  display: block;
+  width: 130px;
+  height: 5px;
+  background-color: #64748b;
+  border-radius: var(--radius-full);
+  margin: 1.25rem auto 0.5rem;
+}
+
+body.mobile-view-mode .whatsapp-floating-dock {
+  left: max(1rem, calc(50% - 220px + 1rem));
+}
+
+/* Mobile Modal Dialog in Mobile Mode */
+body.mobile-view-mode .modal-backdrop {
+  align-items: flex-end !important;
+  padding: 0.5rem !important;
+}
+
+body.mobile-view-mode .modal-dialog,
+body.mobile-view-mode .modal-dialog-xl {
+  width: 100% !important;
+  max-width: 440px !important;
+  max-height: 92vh !important;
+  border-radius: 24px 24px 0 0 !important;
+  margin: 0 auto !important;
+}
+
+/* Seamless Edge-to-Edge on Actual Mobile Viewports */
+@media (max-width: 768px) {
+  body.mobile-view-mode {
+    background: var(--slate-50) !important;
+    padding: 0 !important;
+  }
+
+  body.mobile-view-mode .top-announcement-bar,
+  body.mobile-view-mode .app-header,
+  body.mobile-view-mode .main-content,
+  body.mobile-view-mode .app-footer {
+    max-width: 100% !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  body.mobile-view-mode .top-announcement-bar::before,
+  body.mobile-view-mode .app-footer::after {
+    display: none !important;
+  }
+
+  body.mobile-view-mode .whatsapp-floating-dock {
+    left: 1rem !important;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -2319,6 +2510,11 @@ body.mobile-view-mode .app-footer {
     gap: 0.75rem;
   }
 
+  .status-card-grid {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
   .radio-card {
     padding: 0.85rem;
   }
@@ -2527,4 +2723,922 @@ body.mobile-view-mode .app-footer {
     padding: 1rem 0.75rem;
   }
 }
+
+/* ==========================================================================
+   STUDENT DEMO DASHBOARD & IT COURSE SELECTION STYLES
+   ========================================================================== */
+
+/* Header Records CTA Button */
+.header-records-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 0.45rem 0.95rem;
+  font-size: 0.825rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.header-records-btn:hover {
+  background: linear-gradient(135deg, #0a3880 0%, #0d47a1 100%);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.records-pill-badge {
+  background: rgba(255, 255, 255, 0.28);
+  color: var(--white);
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 800;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Form Card Header Responsive Layout */
+.form-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.header-main-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-side-cta {
+  display: flex;
+  align-items: center;
+}
+
+.btn-records-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--white);
+  color: var(--primary-700);
+  border: 1.5px solid var(--primary-200);
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-xs);
+}
+
+.btn-records-pill:hover {
+  background: var(--primary-50);
+  border-color: var(--primary-500);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-records-pill .records-pill-badge {
+  background: var(--primary-100);
+  color: var(--primary-800);
+}
+
+/* Training Mode (Offline / Online) Selector Cards */
+.mode-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+  margin-top: 0.35rem;
+}
+
+.mode-card {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--slate-200);
+  background: var(--slate-50);
+  padding: 0.85rem 1rem;
+  transition: all var(--transition-fast);
+}
+
+.mode-card:hover {
+  background: var(--white);
+  border-color: var(--primary-400);
+  box-shadow: var(--shadow-sm);
+}
+
+.mode-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.mode-card:has(input[type="radio"]:checked) {
+  background: #f0f7ff;
+  border-color: var(--primary-600);
+  box-shadow: 0 0 0 1px var(--primary-600), var(--shadow-sm);
+}
+
+.mode-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mode-icon-circle {
+  font-size: 1.25rem;
+}
+
+.mode-heading {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+
+.mode-pill-chip {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  background: var(--slate-200);
+  color: var(--slate-700);
+  margin-left: auto;
+}
+
+.mode-card:has(input[type="radio"]:checked) .mode-pill-chip {
+  background: var(--primary-100);
+  color: var(--primary-800);
+}
+
+.mode-caption {
+  font-size: 0.775rem;
+  color: var(--slate-500);
+  margin-top: 0.35rem;
+  line-height: 1.35;
+}
+
+/* Extra Large Modal for Records Dashboard */
+.modal-dialog-xl {
+  max-width: 1040px;
+  width: 95%;
+  max-height: 90vh;
+}
+
+/* Records KPI Grid */
+.records-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.record-kpi-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-xs);
+}
+
+.record-kpi-card .kpi-icon {
+  font-size: 1.5rem;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: var(--slate-100);
+  flex-shrink: 0;
+}
+
+.record-kpi-card.kpi-total .kpi-icon { background: #e0f2fe; }
+.record-kpi-card.kpi-converted .kpi-icon { background: #ecfdf5; }
+.record-kpi-card.kpi-not-converted .kpi-icon { background: #fef2f2; }
+.record-kpi-card.kpi-deciding .kpi-icon { background: #fffbeb; }
+
+.record-kpi-card .kpi-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.record-kpi-card .kpi-label {
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: var(--slate-500);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.record-kpi-card .kpi-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--slate-900);
+  line-height: 1.2;
+}
+
+/* Records Toolbar */
+.records-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.85rem 1rem;
+  background: var(--slate-50);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--slate-200);
+  margin-bottom: 1rem;
+}
+
+.records-search-bar {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  align-items: center;
+}
+
+.records-search-bar svg {
+  position: absolute;
+  left: 0.75rem;
+  color: var(--slate-400);
+  pointer-events: none;
+}
+
+.records-search-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+  border: 1px solid var(--slate-300);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  background: var(--white);
+  transition: all var(--transition-fast);
+}
+
+.records-search-input:focus {
+  outline: none;
+  border-color: var(--primary-600);
+  box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.12);
+}
+
+.records-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.filter-chip {
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--slate-300);
+  background: var(--white);
+  color: var(--slate-700);
+  font-size: 0.775rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-chip:hover {
+  border-color: var(--primary-500);
+  background: var(--primary-50);
+}
+
+.filter-chip.active {
+  background: var(--primary-700);
+  color: var(--white);
+  border-color: var(--primary-700);
+}
+
+.filter-chip-joining.active {
+  background: var(--success-600);
+  border-color: var(--success-600);
+}
+
+.filter-chip-not-conv.active {
+  background: var(--error-600);
+  border-color: var(--error-600);
+}
+
+.filter-chip-deciding.active {
+  background: var(--warning-600);
+  border-color: var(--warning-600);
+}
+
+.records-action-btns {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+/* Records Table */
+.records-table-wrapper {
+  max-height: 440px;
+  overflow-y: auto;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  background: var(--white);
+}
+
+.records-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.835rem;
+  text-align: left;
+}
+
+.records-table th {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #f1f5f9;
+  color: var(--slate-700);
+  font-weight: 700;
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid var(--slate-300);
+  white-space: nowrap;
+}
+
+.records-table td {
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid var(--slate-100);
+  color: var(--slate-800);
+  vertical-align: middle;
+}
+
+.records-table tr:hover td {
+  background: #f8fafc;
+}
+
+.student-name-cell {
+  font-weight: 700;
+  color: var(--slate-900);
+}
+
+.student-ref-id {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--slate-400);
+  font-family: var(--font-family-mono);
+}
+
+.contact-phone-cell {
+  white-space: nowrap;
+  font-family: var(--font-family-mono);
+  font-size: 0.825rem;
+}
+
+.badge-tag-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  font-size: 0.725rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.badge-tag-status.status-joining {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.badge-tag-status.status-not-converted {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.badge-tag-status.status-deciding {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.mode-tag {
+  display: inline-block;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.725rem;
+  font-weight: 600;
+}
+
+.mode-tag-offline {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.mode-tag-online {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.row-actions-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.btn-table-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #25d366;
+  color: var(--white);
+  text-decoration: none;
+  transition: transform var(--transition-fast);
+}
+
+.btn-table-whatsapp:hover {
+  transform: scale(1.15);
+}
+
+.records-empty-state {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--slate-500);
+}
+
+.records-empty-state .empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.records-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.records-footer-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.775rem;
+  color: var(--slate-500);
+}
+
+.records-footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Mobile Responsiveness for Records Dashboard */
+@media (max-width: 768px) {
+  .header-actions {
+    gap: 0.5rem;
+  }
+
+  .header-records-btn span:not(.records-pill-badge) {
+    display: none;
+  }
+
+  .records-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .records-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .records-action-btns {
+    margin-left: 0;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .mode-selector-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Responsive card-based display for records table on mobile */
+  .records-table thead {
+    display: none;
+  }
+
+  .records-table, 
+  .records-table tbody, 
+  .records-table tr, 
+  .records-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .records-table tr {
+    background: var(--white);
+    border: 1px solid var(--slate-200);
+    border-radius: var(--radius-md);
+    padding: 0.85rem;
+    margin-bottom: 0.75rem;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .records-table td {
+    padding: 0.35rem 0;
+    border-bottom: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+  }
+
+  .records-table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: var(--slate-500);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    margin-right: 0.75rem;
+  }
+
+  .records-modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .records-footer-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .records-footer-actions .btn {
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   FORCE 100% COMPLETE MOBILE VIEW IN body.mobile-view-mode ACROSS ALL SCREENS
+   ========================================================================== */
+body.mobile-view-mode .header-actions {
+  gap: 0.4rem !important;
+}
+
+body.mobile-view-mode .header-records-btn span:not(.records-pill-badge) {
+  display: none !important;
+}
+
+body.mobile-view-mode .api-diag-btn span,
+body.mobile-view-mode .sheet-badge-link span {
+  display: none !important;
+}
+
+body.mobile-view-mode .records-kpi-grid {
+  grid-template-columns: repeat(2, 1fr) !important;
+}
+
+body.mobile-view-mode .records-toolbar {
+  flex-direction: column !important;
+  align-items: stretch !important;
+}
+
+body.mobile-view-mode .records-action-btns {
+  margin-left: 0 !important;
+  width: 100% !important;
+  justify-content: space-between !important;
+}
+
+body.mobile-view-mode .mode-selector-grid {
+  grid-template-columns: 1fr !important;
+}
+
+body.mobile-view-mode .grid-2-col {
+  grid-template-columns: 1fr !important;
+}
+
+body.mobile-view-mode .status-card-grid {
+  grid-template-columns: 1fr !important;
+}
+
+body.mobile-view-mode .hero-grid-layout {
+  grid-template-columns: 1fr !important;
+}
+
+body.mobile-view-mode .branches-grid {
+  grid-template-columns: 1fr !important;
+}
+
+body.mobile-view-mode .footer-container {
+  grid-template-columns: 1fr !important;
+}
+
+body.mobile-view-mode .records-table thead {
+  display: none !important;
+}
+
+body.mobile-view-mode .records-table,
+body.mobile-view-mode .records-table tbody,
+body.mobile-view-mode .records-table tr,
+body.mobile-view-mode .records-table td {
+  display: block !important;
+  width: 100% !important;
+}
+
+body.mobile-view-mode .records-table tr {
+  background: var(--white) !important;
+  border: 1px solid var(--slate-200) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 0.85rem !important;
+  margin-bottom: 0.75rem !important;
+  box-shadow: var(--shadow-xs) !important;
+}
+
+body.mobile-view-mode .records-table td {
+  padding: 0.35rem 0 !important;
+  border-bottom: none !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  font-size: 0.8rem !important;
+}
+
+body.mobile-view-mode .records-table td::before {
+  content: attr(data-label);
+  font-weight: 700;
+  color: var(--slate-500);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  margin-right: 0.75rem;
+}
+
+body.mobile-view-mode .records-modal-footer {
+  flex-direction: column !important;
+  align-items: stretch !important;
+}
+
+body.mobile-view-mode .records-footer-actions {
+  flex-direction: column !important;
+  width: 100% !important;
+}
+
+body.mobile-view-mode .records-footer-actions .btn {
+  width: 100% !important;
+}
+
+body.mobile-view-mode .receipt-grid {
+  grid-template-columns: 1fr !important;
+}
+
+body.mobile-view-mode .success-actions {
+  flex-direction: column !important;
+}
+
+body.mobile-view-mode .success-actions .btn {
+  width: 100% !important;
+}
+
+/* ==========================================================================
+   INLINE STUDENT DEMO RECORDS CARD (MOBILE VIEW DIRECT DISPLAY)
+   ========================================================================== */
+.records-card-section {
+  background-color: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+  margin-top: 2rem;
+  transition: all var(--transition-normal);
+}
+
+.records-card-header {
+  padding: 1.25rem 1.75rem;
+  background: linear-gradient(to right, #fbfcfe, #f4f8fc);
+  border-bottom: 1px solid var(--slate-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.records-quick-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.records-card-body {
+  padding: 1.5rem;
+}
+
+/* Individual Student Record Card in Mobile List */
+.student-record-item {
+  background: var(--white);
+  border: 1.5px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.15rem;
+  margin-bottom: 0.85rem;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition-fast);
+}
+
+.student-record-item:hover {
+  border-color: var(--primary-400);
+  box-shadow: var(--shadow-sm);
+}
+
+.record-item-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.65rem;
+}
+
+.record-item-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--slate-900);
+  line-height: 1.25;
+}
+
+.record-item-ref {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--slate-400);
+  font-family: var(--font-family-mono);
+  margin-top: 0.15rem;
+}
+
+.record-item-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 1rem;
+  font-size: 0.825rem;
+  color: var(--slate-700);
+  margin-bottom: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--slate-50);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--slate-100);
+}
+
+.record-detail-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.record-detail-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--slate-400);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.record-detail-value {
+  font-weight: 600;
+  color: var(--slate-800);
+  margin-top: 0.1rem;
+}
+
+.record-item-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--slate-100);
+  flex-wrap: wrap;
+}
+
+.record-contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--primary-700);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  font-family: var(--font-family-mono);
+}
+
+.record-contact-link:hover {
+  color: var(--primary-900);
+  text-decoration: underline;
+}
+
+.record-contact-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.btn-whatsapp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #25d366;
+  color: var(--white);
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform var(--transition-fast);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.btn-whatsapp-chip:hover {
+  transform: scale(1.05);
+  background: #20ba59;
+}
+
+/* Mobile responsive adjustments for inline records */
+@media (max-width: 768px) {
+  .records-card-header {
+    padding: 1.15rem 1rem !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.85rem !important;
+  }
+
+  .records-quick-actions {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  .records-card-body {
+    padding: 1rem !important;
+  }
+
+  .record-item-details {
+    grid-template-columns: 1fr !important;
+    gap: 0.4rem !important;
+  }
+
+  .record-item-bottom {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.5rem !important;
+  }
+
+  .record-contact-actions {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  .btn-whatsapp-chip {
+    flex: 1 !important;
+    justify-content: center !important;
+  }
+}
+
+body.mobile-view-mode .records-card-header {
+  padding: 1.15rem 1rem !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 0.85rem !important;
+}
+
+body.mobile-view-mode .records-quick-actions {
+  width: 100% !important;
+  justify-content: space-between !important;
+}
+
+body.mobile-view-mode .records-card-body {
+  padding: 1rem !important;
+}
+
+body.mobile-view-mode .record-item-details {
+  grid-template-columns: 1fr !important;
+  gap: 0.4rem !important;
+}
+
+body.mobile-view-mode .record-item-bottom {
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 0.5rem !important;
+}
+
+body.mobile-view-mode .record-contact-actions {
+  width: 100% !important;
+  justify-content: space-between !important;
+}
+
+body.mobile-view-mode .btn-whatsapp-chip {
+  flex: 1 !important;
+  justify-content: center !important;
+}
+
 

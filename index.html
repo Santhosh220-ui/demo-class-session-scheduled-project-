@@ -20,7 +20,7 @@
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="mobile-view-mode">
   <!-- Top Global Presence Announcement Bar -->
   <div class="top-announcement-bar">
     <div class="top-bar-container">
@@ -69,6 +69,11 @@
       </div>
       
       <div class="header-actions">
+        <button type="button" class="header-records-btn" id="openRecordsModalBtn" title="View all registered student demo records">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14l2 2 4-4"/></svg>
+          <span>All Student Demos</span>
+          <span class="records-pill-badge" id="navRecordsBadge">0</span>
+        </button>
         <button type="button" class="api-diag-btn" id="openApiModalBtn" title="Google Sheets API Setup &amp; Diagnostics">
           <span class="diag-indicator status-warning" id="headerDiagIndicator"></span>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -171,12 +176,21 @@
       <!-- Main Form Card -->
       <div class="form-card" id="formCard">
         <div class="form-card-header">
-          <div class="header-icon-box pumo-cap-icon-box">
-            <img src="https://pumotechnovation.com/assets/logo/pumo_cap_logo.png" alt="Pumo Cap" class="pumo-cap-img" width="34" height="34">
+          <div class="header-main-info">
+            <div class="header-icon-box pumo-cap-icon-box">
+              <img src="https://pumotechnovation.com/assets/logo/pumo_cap_logo.png" alt="Pumo Cap" class="pumo-cap-img" width="34" height="34">
+            </div>
+            <div>
+              <h3 class="card-heading">Student Demo &amp; Conversion Registration</h3>
+              <p class="card-subheading">Enter student details, select IT course, timing, mode, and joining status.</p>
+            </div>
           </div>
-          <div>
-            <h3 class="card-heading">Student Registration Form</h3>
-            <p class="card-subheading">Please fill out all mandatory fields (<span class="required-star">*</span>). Your details will be synchronized directly to Google Sheets.</p>
+          <div class="header-side-cta">
+            <button type="button" class="btn btn-records-pill" id="cardOpenRecordsBtn" title="View all student demo registrations">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14l2 2 4-4"/></svg>
+              <span>View All Demo Records</span>
+              <span class="records-pill-badge" id="cardRecordsBadge">0</span>
+            </button>
           </div>
         </div>
 
@@ -188,21 +202,14 @@
             <input type="text" id="pumo_hp_field" name="pumo_hp_field" tabindex="-1" autocomplete="off">
           </div>
 
-          <!-- Section 1: Personal & Contact Information -->
+          <!-- Streamlined IT Demo Form Section -->
           <div class="form-section">
-            <div class="section-title-wrap">
-              <span class="section-number">1</span>
-              <div>
-                <h4 class="section-title">Personal & Contact Details</h4>
-                <p class="section-desc">Ensure your phone and email are accurate for demo meeting link and SMS updates.</p>
-              </div>
-            </div>
-
             <div class="form-grid grid-2-col">
-              <!-- Full Name -->
+              
+              <!-- 1. Student Name -->
               <div class="form-group">
                 <label for="fullName" class="form-label">
-                  Student Full Name <span class="required-star">*</span>
+                  Student Name <span class="required-star">*</span>
                 </label>
                 <div class="input-wrapper">
                   <span class="input-icon">
@@ -213,9 +220,9 @@
                     id="fullName" 
                     name="fullName" 
                     class="form-control" 
-                    placeholder="e.g. Anand Kumar S" 
+                    placeholder="Enter student full name" 
                     required 
-                    minlength="3" 
+                    minlength="2" 
                     maxlength="70"
                     autocomplete="name"
                   >
@@ -223,39 +230,17 @@
                 <span class="error-text" id="fullNameError"></span>
               </div>
 
-              <!-- Email Address -->
+              <!-- 2. Contact Number -->
               <div class="form-group">
-                <label for="email" class="form-label">
-                  Email Address <span class="required-star">*</span>
-                </label>
-                <div class="input-wrapper">
-                  <span class="input-icon">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                  </span>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    class="form-control" 
-                    placeholder="student@example.com" 
-                    required 
-                    autocomplete="email"
-                  >
-                </div>
-                <span class="error-text" id="emailError"></span>
-              </div>
-
-              <!-- Mobile Number -->
-              <div class="form-group">
-                <label for="mobileNumber" class="form-label">
-                  Mobile Number (10 Digits) <span class="required-star">*</span>
+                <label for="contactNumber" class="form-label">
+                  Contact Number <span class="required-star">*</span>
                 </label>
                 <div class="input-wrapper input-with-prefix">
                   <span class="phone-prefix">+91</span>
                   <input 
                     type="tel" 
-                    id="mobileNumber" 
-                    name="mobileNumber" 
+                    id="contactNumber" 
+                    name="contactNumber" 
                     class="form-control has-prefix" 
                     placeholder="9876543210" 
                     required 
@@ -264,288 +249,96 @@
                     autocomplete="tel"
                   >
                 </div>
-                <span class="error-text" id="mobileNumberError"></span>
+                <span class="error-text" id="contactNumberError"></span>
               </div>
 
-              <!-- WhatsApp Number with "Same as mobile" toggle -->
+              <!-- 3. IT Course Name (Strictly IT Courses Only) -->
               <div class="form-group">
-                <div class="label-with-action">
-                  <label for="whatsappNumber" class="form-label">
-                    WhatsApp Number <span class="required-star">*</span>
-                  </label>
-                  <label class="checkbox-inline">
-                    <input type="checkbox" id="sameAsMobile">
-                    <span>Same as Mobile</span>
-                  </label>
-                </div>
-                <div class="input-wrapper input-with-prefix">
-                  <span class="phone-prefix">+91</span>
-                  <input 
-                    type="tel" 
-                    id="whatsappNumber" 
-                    name="whatsappNumber" 
-                    class="form-control has-prefix" 
-                    placeholder="9876543210" 
-                    required 
-                    maxlength="10"
-                    pattern="[6-9][0-9]{9}" 
-                    autocomplete="tel"
-                  >
-                </div>
-                <span class="error-text" id="whatsappNumberError"></span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Section 2: Academic Background -->
-          <div class="form-section">
-            <div class="section-title-wrap">
-              <span class="section-number">2</span>
-              <div>
-                <h4 class="section-title">Academic Background</h4>
-                <p class="section-desc">Helps our technical trainer tailor the demo session to your current academic level.</p>
-              </div>
-            </div>
-
-            <div class="form-grid grid-2-col">
-              <!-- College Name -->
-              <div class="form-group grid-span-full">
-                <label for="collegeName" class="form-label">
-                  College / Institution Name <span class="required-star">*</span>
+                <label for="courseName" class="form-label">
+                  Select IT Course <span class="required-star">*</span>
+                  <span class="label-helper-text">(Pure IT &amp; Software programs only)</span>
                 </label>
                 <div class="input-wrapper">
                   <span class="input-icon">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4 8 4v14M9 9v12M15 9v12"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
                   </span>
-                  <input 
-                    type="text" 
-                    id="collegeName" 
-                    name="collegeName" 
-                    class="form-control" 
-                    placeholder="e.g. Anna University / SRM / St. Joseph's / Loyola" 
-                    required 
-                    minlength="2"
-                    maxlength="100"
-                  >
-                </div>
-                <span class="error-text" id="collegeNameError"></span>
-              </div>
-
-              <!-- Degree -->
-              <div class="form-group">
-                <label for="degree" class="form-label">
-                  Degree <span class="required-star">*</span>
-                </label>
-                <div class="input-wrapper">
-                  <span class="input-icon">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                  </span>
-                  <select id="degree" name="degree" class="form-control" required>
-                    <option value="" disabled selected>Select Degree...</option>
-                    <option value="B.E / B.Tech">B.E / B.Tech</option>
-                    <option value="M.E / M.Tech">M.E / M.Tech</option>
-                    <option value="B.Sc">B.Sc</option>
-                    <option value="M.Sc">M.Sc</option>
-                    <option value="BCA">BCA</option>
-                    <option value="MCA">MCA</option>
-                    <option value="Diploma">Diploma (Polytechnic)</option>
-                    <option value="Arts & Science (Other)">Arts &amp; Science (Other)</option>
-                    <option value="Working Professional">Working Professional</option>
-                    <option value="Other">Other</option>
+                  <select id="courseName" name="courseName" class="form-control" required>
+                    <option value="" disabled selected>Select IT Course...</option>
+                    <option value="Java Full Stack">Java Full Stack</option>
+                    <option value="Python Full Stack">Python Full Stack</option>
+                    <option value=".NET Full Stack">.NET Full Stack</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="Data Analytics">Data Analytics</option>
+                    <option value="Data Engineering">Data Engineering</option>
+                    <option value="AWS & DevOps">AWS &amp; DevOps</option>
+                    <option value="Cybersecurity">Cybersecurity</option>
+                    <option value="AI Courses">AI Courses</option>
+                    <option value="Prompt Engineering">Prompt Engineering</option>
                   </select>
                 </div>
-                <span class="error-text" id="degreeError"></span>
+                <span class="error-text" id="courseNameError"></span>
               </div>
 
-              <!-- Department -->
+              <!-- 4. Course Timing Slot -->
               <div class="form-group">
-                <label for="department" class="form-label">
-                  Department / Specialization <span class="required-star">*</span>
+                <label for="courseTiming" class="form-label">
+                  Course Timing <span class="required-star">*</span>
+                  <span class="label-helper-text">(Choose student's preferred demo slot)</span>
                 </label>
                 <div class="input-wrapper">
                   <span class="input-icon">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                   </span>
-                  <select id="department" name="department" class="form-control" required>
-                    <option value="" disabled selected>Select Department...</option>
-                    <option value="Computer Science (CSE)">Computer Science &amp; Engineering (CSE)</option>
-                    <option value="Information Technology (IT)">Information Technology (IT)</option>
-                    <option value="AI & Data Science (AI & DS)">Artificial Intelligence &amp; Data Science (AI &amp; DS)</option>
-                    <option value="Electronics & Communication (ECE)">Electronics &amp; Communication (ECE)</option>
-                    <option value="Electrical & Electronics (EEE)">Electrical &amp; Electronics (EEE)</option>
-                    <option value="Mechanical Engineering (MECH)">Mechanical Engineering</option>
-                    <option value="Civil Engineering (CIVIL)">Civil Engineering</option>
-                    <option value="Mechatronics / Robotics">Mechatronics / Robotics</option>
-                    <option value="Automobile Engineering">Automobile Engineering</option>
-                    <option value="Chemical / Bio-Tech">Chemical / Bio-Tech</option>
-                    <option value="Non-Engineering / Arts / Commerce">Non-Engineering / Arts / Commerce</option>
-                    <option value="Other Department">Other</option>
+                  <select id="courseTiming" name="courseTiming" class="form-control" required>
+                    <option value="" disabled selected>Select Course Timing...</option>
+                    <option value="10:00 AM - 11:30 AM (Morning Slot)">10:00 AM - 11:30 AM (Morning Slot)</option>
+                    <option value="11:30 AM - 01:00 PM (Mid-Day Slot)">11:30 AM - 01:00 PM (Mid-Day Slot)</option>
+                    <option value="02:30 PM - 04:00 PM (Afternoon Slot)">02:30 PM - 04:00 PM (Afternoon Slot)</option>
+                    <option value="04:30 PM - 06:00 PM (Evening Slot)">04:30 PM - 06:00 PM (Evening Slot)</option>
+                    <option value="06:30 PM - 08:00 PM (Working Professionals)">06:30 PM - 08:00 PM (Working Professionals / Late Evening)</option>
+                    <option value="Weekend Batch (Saturday & Sunday)">Weekend Batch (Saturday &amp; Sunday Fast-Track)</option>
                   </select>
                 </div>
-                <span class="error-text" id="departmentError"></span>
+                <span class="error-text" id="courseTimingError"></span>
               </div>
 
-              <!-- Year of Passing -->
+              <!-- 5. Training Mode (Offline or Online) -->
               <div class="form-group">
-                <label for="yearOfPassing" class="form-label">
-                  Year of Passing <span class="required-star">*</span>
+                <label class="form-label">
+                  Training Mode <span class="required-star">*</span>
+                  <span class="label-helper-text">(Offline Classroom or Live Online)</span>
                 </label>
-                <div class="input-wrapper">
-                  <span class="input-icon">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                  </span>
-                  <select id="yearOfPassing" name="yearOfPassing" class="form-control" required>
-                    <option value="" disabled selected>Select Year of Passing...</option>
-                    <option value="2028 (Pursuing 1st Year)">2028 (Pursuing 1st Year)</option>
-                    <option value="2027 (Pursuing 2nd Year)">2027 (Pursuing 2nd Year)</option>
-                    <option value="2026 (Pursuing 3rd Year)">2026 (Pursuing 3rd Year)</option>
-                    <option value="2025 (Final Year)">2025 (Final Year)</option>
-                    <option value="2024 (Passed Out)">2024 (Passed Out)</option>
-                    <option value="2023">2023</option>
-                    <option value="2022">2022</option>
-                    <option value="2021">2021</option>
-                    <option value="2020 or Earlier">2020 or Earlier</option>
-                  </select>
-                </div>
-                <span class="error-text" id="yearOfPassingError"></span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Section 3: Demo Preferences & Course Selection -->
-          <div class="form-section">
-            <div class="section-title-wrap">
-              <span class="section-number">3</span>
-              <div>
-                <h4 class="section-title">Demo Preferences &amp; Course Selection</h4>
-                <p class="section-desc">Select your course of interest, preferred date, slot, and learning mode.</p>
-              </div>
-            </div>
-
-            <!-- Interested Course -->
-            <div class="form-group">
-              <label for="interestedCourse" class="form-label">
-                Interested Course / Technology <span class="required-star">*</span>
-              </label>
-              <div class="input-wrapper">
-                <span class="input-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                </span>
-                <select id="interestedCourse" name="interestedCourse" class="form-control" required>
-                  <option value="" disabled selected>Select Interested Course...</option>
-                  <optgroup label="-- Software Development & Web --">
-                    <option value="Full Stack Python Development">Full Stack Python Development (Django/FastAPI + React)</option>
-                    <option value="Full Stack Java Development">Full Stack Java Development (Spring Boot + Angular/React)</option>
-                    <option value="MERN / MEAN Stack Development">MERN / MEAN Stack Development</option>
-                    <option value="Frontend Development (React / Next.js / Vue)">Frontend Web Development (React / Tailwind)</option>
-                  </optgroup>
-                  <optgroup label="-- Data Science, AI & Cloud --">
-                    <option value="Data Science & Machine Learning">Data Science &amp; Machine Learning with Python</option>
-                    <option value="Artificial Intelligence & Deep Learning">Artificial Intelligence &amp; Generative AI</option>
-                    <option value="Data Analytics (Power BI / Tableau / SQL)">Data Analytics (Power BI, Tableau, Advanced SQL)</option>
-                    <option value="Cloud Computing & DevOps (AWS / Azure / Docker)">Cloud Computing &amp; DevOps (AWS / Docker / K8s)</option>
-                  </optgroup>
-                  <optgroup label="-- Core Electronics & Embedded Systems --">
-                    <option value="Embedded Systems & IoT">Embedded Systems &amp; IoT (ARM, ESP32, Embedded C)</option>
-                    <option value="VLSI Design & Verification">VLSI Design &amp; Verification (Verilog, SystemVerilog)</option>
-                    <option value="Automotive Embedded & AUTOSAR">Automotive Embedded &amp; CAN/LIN Protocol</option>
-                    <option value="Electric Vehicle (EV) Technology">Electric Vehicle (EV) Powertrain &amp; Battery Management</option>
-                  </optgroup>
-                  <optgroup label="-- Mechanical, CAD/CAM & Industrial --">
-                    <option value="CAD/CAM/CAE (SolidWorks / CATIA / Creo)">CAD / CAM / CAE (SolidWorks, CATIA, Creo)</option>
-                    <option value="ANSYS & FEA Simulation">ANSYS &amp; FEA Simulation Analysis</option>
-                    <option value="CNC Programming & Industrial Automation">CNC Programming &amp; Industrial Automation</option>
-                  </optgroup>
-                  <optgroup label="-- Software Testing & Quality Assurance --">
-                    <option value="Software Testing (Manual + Automation Selenium)">Software Testing (Manual + Automation with Selenium/Java)</option>
-                  </optgroup>
-                  <optgroup label="-- Other Domains --">
-                    <option value="Multiple Courses / Need Counseling">Need Guidance / Multiple Courses Discussion</option>
-                  </optgroup>
-                </select>
-              </div>
-              <span class="error-text" id="interestedCourseError"></span>
-            </div>
-
-            <!-- Training Mode (Online vs Offline Cards) -->
-            <div class="form-group">
-              <label class="form-label">
-                Training Mode <span class="required-star">*</span>
-              </label>
-              <div class="radio-card-grid">
-                <label class="radio-card" for="modeOffline">
-                  <input type="radio" id="modeOffline" name="trainingMode" value="Offline" checked>
-                  <div class="radio-card-body">
-                    <div class="radio-card-header">
-                      <span class="card-radio-circle"></span>
-                      <strong class="mode-title">Offline (Classroom)</strong>
+                <div class="mode-selector-grid">
+                  <label class="mode-card" for="modeOffline">
+                    <input type="radio" id="modeOffline" name="trainingMode" value="Offline" checked>
+                    <div class="mode-card-content">
+                      <div class="mode-badge-row">
+                        <span class="mode-icon-circle">🏢</span>
+                        <strong class="mode-heading">Offline</strong>
+                        <span class="mode-pill-chip">Classroom</span>
+                      </div>
+                      <p class="mode-caption">Chennai Centers (Poonamallee, Guduvanchery, Tambaram, Velachery)</p>
                     </div>
-                    <p class="mode-desc">Hands-on practical lab training at one of our 4 Chennai branch centers.</p>
-                  </div>
-                </label>
-
-                <label class="radio-card" for="modeOnline">
-                  <input type="radio" id="modeOnline" name="trainingMode" value="Online">
-                  <div class="radio-card-body">
-                    <div class="radio-card-header">
-                      <span class="card-radio-circle"></span>
-                      <strong class="mode-title">Online (Live Virtual)</strong>
+                  </label>
+                  <label class="mode-card" for="modeOnline">
+                    <input type="radio" id="modeOnline" name="trainingMode" value="Online">
+                    <div class="mode-card-content">
+                      <div class="mode-badge-row">
+                        <span class="mode-icon-circle">💻</span>
+                        <strong class="mode-heading">Online</strong>
+                        <span class="mode-pill-chip">Live Virtual</span>
+                      </div>
+                      <p class="mode-caption">Interactive 1-on-1 live session with mentor over Google Meet</p>
                     </div>
-                    <p class="mode-desc">Live interactive instructor-led classes with screen sharing, recordings &amp; remote lab access.</p>
-                  </div>
-                </label>
+                  </label>
+                </div>
+                <span class="error-text" id="trainingModeError"></span>
               </div>
-              <span class="error-text" id="trainingModeError"></span>
-            </div>
 
-            <!-- Branch Location Selector -->
-            <div class="form-group" id="branchSectionGroup">
-              <label for="branchLocation" class="form-label">
-                Branch Location <span class="required-star">*</span>
-                <span class="label-helper-text" id="branchHelperText">(Select the Chennai branch nearest to you)</span>
-              </label>
-              <div class="branch-pill-grid">
-                <label class="branch-pill-label">
-                  <input type="radio" name="branchLocation" value="Poonamallee" checked>
-                  <span class="branch-pill">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                    Poonamallee
-                  </span>
-                </label>
-
-                <label class="branch-pill-label">
-                  <input type="radio" name="branchLocation" value="Guduvanchery">
-                  <span class="branch-pill">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                    Guduvanchery
-                  </span>
-                </label>
-
-                <label class="branch-pill-label">
-                  <input type="radio" name="branchLocation" value="Tambaram">
-                  <span class="branch-pill">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                    Tambaram
-                  </span>
-                </label>
-
-                <label class="branch-pill-label">
-                  <input type="radio" name="branchLocation" value="Velachery">
-                  <span class="branch-pill">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                    Velachery
-                  </span>
-                </label>
-              </div>
-              <span class="error-text" id="branchLocationError"></span>
-            </div>
-
-            <!-- Demo Date & Demo Time Grid -->
-            <div class="form-grid grid-2-col">
-              <!-- Demo Date -->
+              <!-- 6. Date of Demo -->
               <div class="form-group">
                 <label for="demoDate" class="form-label">
-                  Preferred Demo Date <span class="required-star">*</span>
+                  Date of Demo <span class="required-star">*</span>
                 </label>
                 <div class="input-wrapper">
                   <span class="input-icon">
@@ -559,58 +352,58 @@
                     required
                   >
                 </div>
-                <span class="input-hint">Demo sessions are conducted Monday through Saturday.</span>
                 <span class="error-text" id="demoDateError"></span>
               </div>
 
-              <!-- Demo Time Slot -->
-              <div class="form-group">
-                <label for="demoTime" class="form-label">
-                  Preferred Demo Time Slot <span class="required-star">*</span>
+              <!-- 7. Joining or Not Convert Status -->
+              <div class="form-group grid-span-full">
+                <label class="form-label">
+                  Course Joining Status (Convert) <span class="required-star">*</span>
+                  <span class="label-helper-text">(Record candidate's decision: Joining, Not Converted, or Discussion)</span>
                 </label>
-                <div class="input-wrapper">
-                  <span class="input-icon">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                  </span>
-                  <select id="demoTime" name="demoTime" class="form-control" required>
-                    <option value="" disabled selected>Select Demo Time Slot...</option>
-                    <option value="10:00 AM - 11:30 AM">10:00 AM - 11:30 AM (Morning Slot)</option>
-                    <option value="11:30 AM - 01:00 PM">11:30 AM - 01:00 PM (Mid-Day Slot)</option>
-                    <option value="02:30 PM - 04:00 PM">02:30 PM - 04:00 PM (Afternoon Slot)</option>
-                    <option value="04:30 PM - 06:00 PM">04:30 PM - 06:00 PM (Evening Slot)</option>
-                    <option value="06:30 PM - 08:00 PM">06:30 PM - 08:00 PM (Working Professionals Slot)</option>
-                  </select>
+                <div class="status-card-grid">
+                  <!-- Option 1: Joining / Converted -->
+                  <label class="status-card status-card-joining" for="statusJoining">
+                    <input type="radio" id="statusJoining" name="joiningStatus" value="Joining" checked>
+                    <div class="status-card-body">
+                      <div class="status-card-header">
+                        <span class="status-radio-circle"></span>
+                        <strong class="status-title">Joining</strong>
+                        <span class="status-pill-badge badge-green">Converted</span>
+                      </div>
+                      <p class="status-desc">Student confirmed or ready to enroll in the course.</p>
+                    </div>
+                  </label>
+
+                  <!-- Option 2: Not Converted -->
+                  <label class="status-card status-card-not-converted" for="statusNotConverted">
+                    <input type="radio" id="statusNotConverted" name="joiningStatus" value="Not Converted">
+                    <div class="status-card-body">
+                      <div class="status-card-header">
+                        <span class="status-radio-circle"></span>
+                        <strong class="status-title">Not Converted</strong>
+                        <span class="status-pill-badge badge-red">Not Joining</span>
+                      </div>
+                      <p class="status-desc">Student decided not to join or not interested.</p>
+                    </div>
+                  </label>
+
+                  <!-- Option 3: Deciding / Follow Up -->
+                  <label class="status-card status-card-deciding" for="statusDeciding">
+                    <input type="radio" id="statusDeciding" name="joiningStatus" value="Deciding / Follow Up">
+                    <div class="status-card-body">
+                      <div class="status-card-header">
+                        <span class="status-radio-circle"></span>
+                        <strong class="status-title">Deciding / Discussion</strong>
+                        <span class="status-pill-badge badge-amber">Follow Up</span>
+                      </div>
+                      <p class="status-desc">Decision pending after demo session or counseling call.</p>
+                    </div>
+                  </label>
                 </div>
-                <span class="error-text" id="demoTimeError"></span>
+                <span class="error-text" id="joiningStatusError"></span>
               </div>
-            </div>
-          </div>
 
-          <!-- Section 4: Remarks & Career Goals -->
-          <div class="form-section">
-            <div class="section-title-wrap">
-              <span class="section-number">4</span>
-              <div>
-                <h4 class="section-title">Additional Remarks &amp; Questions</h4>
-                <p class="section-desc">Share any specific expectations, projects you want to build, or placement questions.</p>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="remarks" class="form-label">
-                Remarks / Career Goals (Optional)
-              </label>
-              <textarea 
-                id="remarks" 
-                name="remarks" 
-                rows="3" 
-                class="form-control" 
-                placeholder="e.g. Looking for placement assistance, final year project guidance, or weekend batch timings..."
-                maxlength="500"
-              ></textarea>
-              <div class="textarea-footer">
-                <span class="char-count" id="remarksCharCount">0 / 500 characters</span>
-              </div>
             </div>
           </div>
 
@@ -677,34 +470,39 @@
 
           <div class="receipt-grid">
             <div class="receipt-item">
-              <span class="item-label">Interested Course</span>
+              <span class="item-label">Contact Number</span>
+              <strong class="item-val" id="receiptContact">-</strong>
+            </div>
+            <div class="receipt-item">
+              <span class="item-label">IT Course</span>
               <strong class="item-val" id="receiptCourse">-</strong>
             </div>
             <div class="receipt-item">
-              <span class="item-label">Demo Date &amp; Slot</span>
-              <strong class="item-val" id="receiptDateTime">-</strong>
+              <span class="item-label">Course Timing Slot</span>
+              <strong class="item-val" id="receiptTiming">-</strong>
             </div>
             <div class="receipt-item">
               <span class="item-label">Training Mode</span>
               <strong class="item-val" id="receiptMode">-</strong>
             </div>
             <div class="receipt-item">
-              <span class="item-label">Branch / Center</span>
-              <strong class="item-val" id="receiptBranch">-</strong>
+              <span class="item-label">Date of Demo</span>
+              <strong class="item-val" id="receiptDemoDate">-</strong>
             </div>
             <div class="receipt-item">
-              <span class="item-label">Contact Mobile</span>
-              <strong class="item-val" id="receiptMobile">-</strong>
-            </div>
-            <div class="receipt-item">
-              <span class="item-label">College &amp; Degree</span>
-              <strong class="item-val" id="receiptAcademic">-</strong>
+              <span class="item-label">Joining / Convert Status</span>
+              <strong class="item-val" id="receiptJoiningStatus">-</strong>
             </div>
           </div>
         </div>
 
         <!-- Post-submission Action Buttons -->
         <div class="success-actions">
+          <button type="button" class="btn btn-secondary" id="successViewRecordsBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14l2 2 4-4"/></svg>
+            <span>View All Demo Records</span>
+          </button>
+
           <a 
             href="https://docs.google.com/spreadsheets/d/1jBZ1tbLNVroOzcTTXbcRRBVk1G1hrQXJklHlig3nmbk/edit" 
             target="_blank" 
@@ -724,6 +522,93 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
             <span>Register Another Student</span>
           </button>
+        </div>
+      </div>
+
+      <!-- Inline Student Demo Records Section (Visible directly in mobile view & desktop) -->
+      <div class="records-card-section" id="inlineRecordsCard">
+        <div class="records-card-header">
+          <div class="header-main-info">
+            <div class="header-icon-box pumo-cap-icon-box">
+              <img src="https://pumotechnovation.com/assets/logo/pumo_cap_logo.png" alt="Pumo Cap" class="pumo-cap-img" width="32" height="32">
+            </div>
+            <div>
+              <h3 class="card-heading">
+                Registered Student Demos 
+                <span class="records-pill-badge" id="inlineRecordsBadge">0</span>
+              </h3>
+              <p class="card-subheading">Live candidate records with timing, mode &amp; conversion status</p>
+            </div>
+          </div>
+          <div class="records-quick-actions">
+            <button type="button" class="btn btn-sm btn-outline" id="inlineExportCsvBtn" title="Export records to CSV">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Export CSV</span>
+            </button>
+            <a href="https://docs.google.com/spreadsheets/d/1jBZ1tbLNVroOzcTTXbcRRBVk1G1hrQXJklHlig3nmbk/edit" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-sheet" title="Open Google Sheet">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              <span>Google Sheet</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="records-card-body">
+          <!-- Summary KPI Badges Grid -->
+          <div class="records-kpi-grid">
+            <div class="record-kpi-card kpi-total">
+              <div class="kpi-icon">📋</div>
+              <div class="kpi-info">
+                <span class="kpi-label">Total Demos</span>
+                <strong class="kpi-value" id="inlineKpiTotal">0</strong>
+              </div>
+            </div>
+            <div class="record-kpi-card kpi-converted">
+              <div class="kpi-icon">✅</div>
+              <div class="kpi-info">
+                <span class="kpi-label">Joining</span>
+                <strong class="kpi-value" id="inlineKpiConverted">0</strong>
+              </div>
+            </div>
+            <div class="record-kpi-card kpi-not-converted">
+              <div class="kpi-icon">❌</div>
+              <div class="kpi-info">
+                <span class="kpi-label">Not Converted</span>
+                <strong class="kpi-value" id="inlineKpiNotConverted">0</strong>
+              </div>
+            </div>
+            <div class="record-kpi-card kpi-deciding">
+              <div class="kpi-icon">⏳</div>
+              <div class="kpi-info">
+                <span class="kpi-label">Deciding</span>
+                <strong class="kpi-value" id="inlineKpiDeciding">0</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search & Filter Bar -->
+          <div class="records-toolbar">
+            <div class="records-search-bar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="inlineSearchInput" class="records-search-input" placeholder="Search student name, contact, course...">
+            </div>
+            <div class="records-filter-group" id="inlineFilterPills">
+              <button type="button" class="filter-chip active" data-filter="all">All</button>
+              <button type="button" class="filter-chip filter-chip-joining" data-filter="Joining">Joining</button>
+              <button type="button" class="filter-chip filter-chip-not-conv" data-filter="Not Converted">Not Converted</button>
+              <button type="button" class="filter-chip filter-chip-deciding" data-filter="Deciding">Deciding</button>
+            </div>
+          </div>
+
+          <!-- Inline Records Cards / List Container -->
+          <div class="inline-records-list" id="inlineRecordsList">
+            <!-- Rendered dynamically by script.js -->
+          </div>
+
+          <div class="records-empty-state hidden" id="inlineRecordsEmpty">
+            <div class="empty-icon">📭</div>
+            <h4>No demo records found</h4>
+            <p>Submitted demo registrations will appear here instantly.</p>
+          </div>
         </div>
       </div>
 
@@ -991,22 +876,13 @@ function doPost(e) {
       sheet.appendRow([
         "Timestamp",
         "Reference ID",
-        "Student Full Name",
-        "Mobile Number",
-        "WhatsApp Number",
-        "Email Address",
-        "College Name",
-        "Degree",
-        "Department",
-        "Year of Passing",
-        "Interested Course",
-        "Demo Date",
-        "Demo Time",
-        "Training Mode",
-        "Branch Location",
-        "Remarks"
+        "Student Name",
+        "Contact Number",
+        "Course Name",
+        "Date of Demo",
+        "Joining Status (Convert)"
       ]);
-      sheet.getRange(1, 1, 1, 16).setFontWeight("bold").setBackground("#0d47a1").setFontColor("#ffffff");
+      sheet.getRange(1, 1, 1, 7).setFontWeight("bold").setBackground("#0d47a1").setFontColor("#ffffff");
       sheet.setFrozenRows(1);
     }
 
@@ -1019,40 +895,44 @@ function doPost(e) {
     }
 
     var fullName = p.fullName || p.studentName || p.name || "N/A";
-    var mobile = p.mobileNumber || p.phone || p.mobile || "N/A";
-    var whatsapp = p.whatsappNumber || p.whatsapp || mobile;
-    var email = p.email || p.emailAddress || "N/A";
-    var college = p.collegeName || p.college || "N/A";
-    var degree = p.degree || "N/A";
-    var department = p.department || p.dept || "N/A";
-    var yop = p.yearOfPassing || p.yop || "N/A";
-    var course = p.interestedCourse || p.course || "N/A";
+    var contact = p.contactNumber || p.contact || p.mobileNumber || p.phone || p.mobile || "N/A";
+    var course = p.courseName || p.interestedCourse || p.course || "N/A";
     var demoDate = p.demoDate || p.date || "N/A";
-    var demoTime = p.demoTime || p.time || p.slot || "N/A";
-    var mode = p.trainingMode || p.mode || "Offline";
-    var branch = p.branchLocation || p.branch || p.location || "Poonamallee";
-    var remarks = p.remarks || p.comments || "";
+    var joiningStatus = p.joiningStatus || p.status || p.convert || p.conversion || p.remarks || "Joining";
     var refId = p.referenceId || ("PT-" + Math.floor(1000 + Math.random() * 9000));
     var timestamp = p.submissionDate || new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
 
-    sheet.appendRow([
-      timestamp,
-      refId,
-      fullName,
-      "'" + mobile,
-      "'" + whatsapp,
-      email,
-      college,
-      degree,
-      department,
-      yop,
-      course,
-      demoDate,
-      demoTime,
-      mode,
-      branch,
-      remarks
-    ]);
+    // If existing sheet has 16 columns from previous template, support both formats seamlessly
+    if (sheet.getLastColumn() > 7) {
+      sheet.appendRow([
+        timestamp,
+        refId,
+        fullName,
+        "'" + contact,
+        "'" + contact,
+        p.email || "N/A",
+        p.collegeName || "N/A",
+        p.degree || "N/A",
+        p.department || "N/A",
+        p.yearOfPassing || "N/A",
+        course,
+        demoDate,
+        p.demoTime || "N/A",
+        p.trainingMode || "N/A",
+        p.branchLocation || "N/A",
+        "Joining Status: " + joiningStatus
+      ]);
+    } else {
+      sheet.appendRow([
+        timestamp,
+        refId,
+        fullName,
+        "'" + contact,
+        course,
+        demoDate,
+        joiningStatus
+      ]);
+    }
 
     return ContentService.createTextOutput(JSON.stringify({
       result: "success",
@@ -1084,11 +964,130 @@ function doPost(e) {
     </div>
   </div>
 
+  <!-- Student Demo Information Records Modal (Dashboard) -->
+  <div class="modal-backdrop hidden" id="recordsModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="recordsModalTitle">
+    <div class="modal-dialog modal-dialog-xl">
+      <div class="modal-header">
+        <div class="modal-header-title">
+          <div class="header-icon-box pumo-cap-icon-box">
+            <img src="https://pumotechnovation.com/assets/logo/pumo_cap_logo.png" alt="Pumo Logo" width="30" height="30">
+          </div>
+          <div>
+            <h3 id="recordsModalTitle">Student Demo &amp; Conversion Dashboard</h3>
+            <p class="modal-subtitle">All registered student demos with IT course, timing, mode, and conversion status</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn" id="closeRecordsModalBtn" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Records Summary KPI Metrics -->
+        <div class="records-kpi-grid">
+          <div class="record-kpi-card kpi-total">
+            <div class="kpi-icon">📋</div>
+            <div class="kpi-info">
+              <span class="kpi-label">Total Demos Registered</span>
+              <strong class="kpi-value" id="kpiTotalDemos">0</strong>
+            </div>
+          </div>
+          <div class="record-kpi-card kpi-converted">
+            <div class="kpi-icon">✅</div>
+            <div class="kpi-info">
+              <span class="kpi-label">Joining / Converted</span>
+              <strong class="kpi-value" id="kpiConverted">0</strong>
+            </div>
+          </div>
+          <div class="record-kpi-card kpi-not-converted">
+            <div class="kpi-icon">❌</div>
+            <div class="kpi-info">
+              <span class="kpi-label">Not Converted</span>
+              <strong class="kpi-value" id="kpiNotConverted">0</strong>
+            </div>
+          </div>
+          <div class="record-kpi-card kpi-deciding">
+            <div class="kpi-icon">⏳</div>
+            <div class="kpi-info">
+              <span class="kpi-label">Follow Up / Deciding</span>
+              <strong class="kpi-value" id="kpiDeciding">0</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="records-toolbar">
+          <div class="records-search-bar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="recordsSearchInput" class="records-search-input" placeholder="Search by student name, contact, IT course, mode...">
+          </div>
+
+          <div class="records-filter-group" id="recordsFilterPills">
+            <button type="button" class="filter-chip active" data-filter="all">All (<span id="chipAllCount">0</span>)</button>
+            <button type="button" class="filter-chip filter-chip-joining" data-filter="Joining">Joining (<span id="chipJoiningCount">0</span>)</button>
+            <button type="button" class="filter-chip filter-chip-not-conv" data-filter="Not Converted">Not Converted (<span id="chipNotConvCount">0</span>)</button>
+            <button type="button" class="filter-chip filter-chip-deciding" data-filter="Deciding">Deciding (<span id="chipDecidingCount">0</span>)</button>
+          </div>
+
+          <div class="records-action-btns">
+            <button type="button" class="btn btn-sm btn-outline" id="exportRecordsCsvBtn" title="Download all records as CSV file">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Export CSV</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-secondary" id="refreshRecordsBtn" title="Refresh records list">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              <span>Refresh</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Records Table & Cards Container -->
+        <div class="records-table-wrapper" id="recordsTableWrapper">
+          <table class="records-table" id="recordsDataTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Student Name</th>
+                <th>Contact</th>
+                <th>IT Course</th>
+                <th>Timing Slot</th>
+                <th>Mode</th>
+                <th>Demo Date</th>
+                <th>Joining Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="recordsTableBody">
+              <!-- Rendered via JavaScript -->
+            </tbody>
+          </table>
+          <div class="records-empty-state hidden" id="recordsEmptyState">
+            <div class="empty-icon">📭</div>
+            <h4>No demo records found</h4>
+            <p>New student registrations submitted through the form will appear here automatically.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer records-modal-footer">
+        <div class="records-footer-meta">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span>All submissions sync directly into the Pumo Technovation Google Sheet database.</span>
+        </div>
+        <div class="records-footer-actions">
+          <a href="https://docs.google.com/spreadsheets/d/1jBZ1tbLNVroOzcTTXbcRRBVk1G1hrQXJklHlig3nmbk/edit" target="_blank" rel="noopener noreferrer" class="btn btn-outline-sheet">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            <span>Open in Google Sheets</span>
+          </a>
+          <button type="button" class="btn btn-secondary" id="closeRecordsModalBottomBtn">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Floating Mobile View Toggle (Desktop helper) -->
   <aside class="mobile-preview-dock" id="mobilePreviewDock" aria-label="Device Viewport Switcher">
-    <button type="button" class="btn-device-toggle" id="toggleMobileViewBtn" title="Toggle between Desktop and Mobile layout">
-      <span class="device-icon" id="deviceToggleIcon">📱</span>
-      <span class="device-text" id="deviceToggleText">Switch to Mobile View</span>
+    <button type="button" class="btn-device-toggle" id="toggleMobileViewBtn" title="Toggle between Mobile and Desktop layout">
+      <span class="device-icon" id="deviceToggleIcon">🖥️</span>
+      <span class="device-text" id="deviceToggleText">Switch to Desktop View</span>
     </button>
   </aside>
 
