@@ -132,6 +132,11 @@
     copyCodeBtnText: document.getElementById('copyCodeBtnText'),
     appsScriptCodeBlock: document.getElementById('appsScriptCodeBlock'),
 
+    // Mobile Viewport Simulator Controls
+    toggleMobileViewBtn: document.getElementById('toggleMobileViewBtn'),
+    deviceToggleText: document.getElementById('deviceToggleText'),
+    deviceToggleIcon: document.getElementById('deviceToggleIcon'),
+
     // Error Text Spans
     errors: {
       fullName: document.getElementById('fullNameError'),
@@ -398,7 +403,28 @@
       radio.addEventListener('change', handleTrainingModeChange);
     });
 
+    // Floating Mobile Simulator Toggle
+    if (DOM.toggleMobileViewBtn) {
+      DOM.toggleMobileViewBtn.addEventListener('click', toggleMobileViewportMode);
+    }
+
     setupInlineValidationListeners();
+  }
+
+  function toggleMobileViewportMode() {
+    document.body.classList.toggle('mobile-view-mode');
+    const isMobileMode = document.body.classList.contains('mobile-view-mode');
+    if (DOM.deviceToggleText && DOM.deviceToggleIcon) {
+      if (isMobileMode) {
+        DOM.deviceToggleText.textContent = 'Switch to Desktop View';
+        DOM.deviceToggleIcon.textContent = '🖥️';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        DOM.deviceToggleText.textContent = 'Switch to Mobile View';
+        DOM.deviceToggleIcon.textContent = '📱';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
   }
 
   // --------------------------------------------------------------------------

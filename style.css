@@ -1715,89 +1715,469 @@ textarea.form-control {
   }
 }
 
+/* --------------------------------------------------------------------------
+   12. Floating Desktop-to-Mobile View Switcher
+   -------------------------------------------------------------------------- */
+.mobile-preview-dock {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 999;
+}
+
+.btn-device-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1.25rem;
+  background: linear-gradient(135deg, var(--slate-900), #1e3a8a);
+  color: var(--white);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.4);
+  transition: all var(--transition-normal);
+  backdrop-filter: blur(8px);
+}
+
+.btn-device-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px -5px rgba(13, 71, 161, 0.5);
+  border-color: var(--primary-400);
+}
+
+.device-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+/* --------------------------------------------------------------------------
+   13. Desktop Mobile Simulator Viewport Mode (.mobile-view-mode)
+   -------------------------------------------------------------------------- */
+body.mobile-view-mode {
+  background: #090e17 !important;
+  padding: 1.5rem 0 3rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body.mobile-view-mode .app-header,
+body.mobile-view-mode .main-content,
+body.mobile-view-mode .app-footer {
+  width: 100%;
+  max-width: 414px; /* Standard flagship smartphone width (iPhone 15/16 Pro Max) */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body.mobile-view-mode .app-header {
+  border-top-left-radius: 36px;
+  border-top-right-radius: 36px;
+  border-left: 10px solid #1e293b;
+  border-right: 10px solid #1e293b;
+  border-top: 10px solid #1e293b;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+body.mobile-view-mode .app-header::before {
+  content: "";
+  display: block;
+  width: 110px;
+  height: 18px;
+  background-color: #0f172a;
+  border-radius: var(--radius-full);
+  margin: -0.25rem auto 0.5rem;
+}
+
+body.mobile-view-mode .main-content {
+  border-left: 10px solid #1e293b;
+  border-right: 10px solid #1e293b;
+  background-color: var(--slate-50);
+}
+
+body.mobile-view-mode .app-footer {
+  border-bottom-left-radius: 36px;
+  border-bottom-right-radius: 36px;
+  border-left: 10px solid #1e293b;
+  border-right: 10px solid #1e293b;
+  border-bottom: 10px solid #1e293b;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   14. Native & Simulator Responsive Styles (Mobile Overhaul)
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+  .branches-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .footer-col-main {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Mobile Screens (<= 768px) and Simulator Mode */
+@media (max-width: 768px), (max-width: 1024px) {
+  /* Prevent iOS Safari aggressive auto-zoom when focusing inputs */
+  .form-control,
+  select.form-control,
+  input[type="text"],
+  input[type="tel"],
+  input[type="email"],
+  input[type="date"],
+  textarea.form-control {
+    font-size: 16px !important;
+    min-height: 48px;
+  }
+}
+
 @media (max-width: 768px) {
+  /* Hide the preview toggle on actual mobile devices */
+  .mobile-preview-dock {
+    display: none !important;
+  }
+
+  /* Compact Mobile Header */
+  .app-header {
+    padding: 0.65rem 0;
+  }
+
+  .header-container {
+    padding: 0 1rem;
+    gap: 0.5rem;
+  }
+
+  .brand-logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+  }
+
+  .brand-logo-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .brand-title {
+    font-size: 1.05rem;
+  }
+
+  .brand-tagline {
+    display: none; /* Hide tagline on mobile to keep navbar ultra-clean */
+  }
+
+  .header-actions {
+    gap: 0.4rem;
+  }
+
   .header-actions .header-link,
   .header-actions .status-pill {
     display: none;
   }
 
+  .api-diag-btn {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.75rem;
+  }
+
+  .api-diag-btn span {
+    display: none; /* Compact icon-only button on mobile */
+  }
+
+  .sheet-badge-link {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.75rem;
+  }
+
+  .sheet-badge-link span {
+    display: none; /* Compact icon-only button on mobile */
+  }
+
+  /* Mobile Hero Section */
+  .hero-section {
+    padding: 2.25rem 1rem 3.75rem;
+  }
+
   .hero-title {
-    font-size: 1.85rem;
+    font-size: 1.65rem;
+    line-height: 1.25;
   }
 
   .hero-subtitle {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1.4rem;
   }
 
+  .value-props {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .prop-item {
+    justify-content: center;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  /* Registration Form Card on Mobile */
+  .registration-portal-wrapper {
+    padding: 0 0.85rem;
+    margin-top: -2.5rem;
+  }
+
+  .form-card {
+    border-radius: var(--radius-md);
+  }
+
+  .form-card-header {
+    padding: 1.15rem 1rem;
+    gap: 0.75rem;
+  }
+
+  .header-icon-box {
+    width: 42px;
+    height: 42px;
+  }
+
+  .card-heading {
+    font-size: 1.15rem;
+  }
+
+  .card-subheading {
+    font-size: 0.775rem;
+    line-height: 1.4;
+  }
+
+  .form-section {
+    padding: 1.25rem 1rem;
+  }
+
+  .section-title-wrap {
+    gap: 0.65rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .section-number {
+    width: 24px;
+    height: 24px;
+    font-size: 0.75rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+  }
+
+  .section-desc {
+    font-size: 0.775rem;
+  }
+
+  /* 1-Column Responsive Grids */
   .grid-2-col {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .radio-card-grid {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .radio-card {
+    padding: 0.85rem;
+  }
+
+  .mode-desc {
+    padding-left: 1.5rem;
+    font-size: 0.775rem;
   }
 
   .branch-pill-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
   }
 
-  .receipt-grid {
-    grid-template-columns: 1fr;
+  .branch-pill {
+    padding: 0.65rem 0.4rem;
+    font-size: 0.8rem;
   }
 
-  .form-card-header,
-  .form-section,
+  /* Actions Bar */
   .form-actions-bar {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-  }
-
-  .form-actions-bar {
+    padding: 1.25rem 1rem;
     flex-direction: column-reverse;
+    gap: 0.75rem;
   }
 
   .btn {
     width: 100%;
+    min-height: 48px;
+    font-size: 0.95rem;
   }
 
+  .submission-note {
+    padding: 0.75rem 1rem;
+    font-size: 0.725rem;
+  }
+
+  /* Success Receipt on Mobile */
   .success-card {
-    padding: 1.75rem 1.25rem;
+    padding: 1.5rem 1rem;
+  }
+
+  .success-icon-badge {
+    width: 60px;
+    height: 60px;
+  }
+
+  .success-icon-badge svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .success-title {
+    font-size: 1.45rem;
+  }
+
+  .success-desc {
+    font-size: 0.875rem;
+  }
+
+  .receipt-card {
+    padding: 1.15rem 1rem;
   }
 
   .receipt-header {
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.6rem;
   }
 
   .receipt-ref-box {
     text-align: left;
   }
 
-  .footer-bottom-container {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-section {
-    padding: 2.25rem 1rem 3.5rem;
-  }
-
-  .brand-title {
-    font-size: 1.1rem;
-  }
-
-  .registration-portal-wrapper {
-    padding: 0 0.75rem;
-    margin-top: -2.25rem;
-  }
-
-  .branch-pill-grid {
+  .receipt-grid {
     grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .success-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .success-actions .btn {
+    width: 100%;
+  }
+
+  /* Branches Section on Mobile */
+  .branches-section {
+    margin: 3rem auto 1rem;
+    padding: 0 1rem;
+  }
+
+  .centered-title {
+    font-size: 1.5rem;
+  }
+
+  .centered-subtitle {
+    font-size: 0.85rem;
   }
 
   .branches-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .branch-card {
+    padding: 1.25rem;
+  }
+
+  /* Modal on Mobile */
+  .modal-backdrop {
+    padding: 0.5rem;
+    align-items: flex-end; /* Mobile bottom sheet style */
+  }
+
+  .modal-dialog {
+    max-height: 92vh;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .modal-header {
+    padding: 1rem 1.15rem;
+  }
+
+  .modal-body {
+    padding: 1.15rem 1rem;
+    gap: 1.15rem;
+  }
+
+  .diag-status-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .diag-btn-group {
+    flex-direction: column;
+  }
+
+  .diag-btn-group .btn {
+    width: 100%;
+  }
+
+  .config-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .config-actions .btn {
+    width: 100%;
+  }
+
+  /* Footer on Mobile */
+  .footer-container {
+    grid-template-columns: 1fr;
+    padding: 2.5rem 1rem 1.5rem;
+    gap: 1.75rem;
+  }
+
+  .footer-bottom-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
   }
 }
+
+/* Extra Compact Phones (<= 390px, e.g. iPhone SE, Galaxy A series) */
+@media (max-width: 390px) {
+  .branch-pill-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-title {
+    font-size: 1.45rem;
+  }
+
+  .registration-portal-wrapper {
+    padding: 0 0.5rem;
+  }
+
+  .form-section {
+    padding: 1rem 0.75rem;
+  }
+}
+
